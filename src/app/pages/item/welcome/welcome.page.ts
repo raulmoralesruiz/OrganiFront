@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WelcomeService } from './services/welcome.service';
-import { SearchDescriptionInterface } from './models/search_description.interface';
+import { ItemService } from '../services/item.service';
+import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { stringify } from '@angular/compiler/src/util';
-import { ItemInterface } from './models/item.interface';
+import { ItemInterface } from '../models/item.interface';
 
 @Component({
   selector: 'app-welcome',
@@ -10,7 +10,7 @@ import { ItemInterface } from './models/item.interface';
   styleUrls: ['./welcome.page.scss'],
 })
 export class WelcomePage implements OnInit {
-  homes: any = [];
+  items: ItemInterface[] = [];
 
   itemDescription: string = '';
   itemsSearched: ItemInterface[] = [];
@@ -18,16 +18,10 @@ export class WelcomePage implements OnInit {
 
   currentDisplayIndex: number = -1;
 
-  constructor(private welcomeService: WelcomeService) {}
+  constructor(private itemService: ItemService) {}
 
-  ngOnInit() {}
-
-  // getAllHomes() {
-  //   this.welcomeService.getAllHomes().subscribe((res) => {
-  //     this.homes = res;
-  //     console.log(res);
-  //   });
-  // }
+  ngOnInit() {
+  }
 
   getItemByDescription() {
     // Se define el objeto con la descripción a buscar
@@ -38,9 +32,8 @@ export class WelcomePage implements OnInit {
     // Se comprueba si la descripción tiene al menos 3 caracteres
     if (body.description.length > 2) {
       // Se ejecuta la búsqueda
-      this.welcomeService.getItemByDescription(body).subscribe((res) => {
+      this.itemService.getItemByDescription(body).subscribe((res) => {
         this.itemsSearched = res;
-        console.log(res);
       });
     }
   }

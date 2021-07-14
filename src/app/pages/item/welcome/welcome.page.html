@@ -1,16 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <!-- <ion-buttons slot="start">
+    <ion-buttons slot="start">
       <ion-menu-button color="primary"></ion-menu-button>
-    </ion-buttons> -->
-    <ion-title color="primary" class="ion-text-center">Organi</ion-title>
+    </ion-buttons>
+    <ion-title mode=ios color="primary" class="ion-text-center">Organi</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<!-- <ion-text color="primary" class="ion-text-center">
-  <h1>Organi</h1>
-</ion-text> -->
-
 <ion-searchbar color="primary" (ionChange)="getItemByDescription()" [(ngModel)]="itemDescription"></ion-searchbar>
 
 <ion-content>
@@ -59,7 +54,7 @@
         </ion-item>
 
         <div *ngIf="detailsActivated">
-          <ion-item>
+          <ion-item *ngIf="item.color">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Color</h2>
@@ -68,7 +63,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.brand">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Brand</h2>
@@ -77,7 +72,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.model">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Model</h2>
@@ -86,7 +81,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.group">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Group</h2>
@@ -95,7 +90,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.price">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Price</h2>
@@ -104,7 +99,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.store_link">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Store link</h2>
@@ -113,7 +108,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.serial_number">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Serial number</h2>
@@ -122,7 +117,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.purchase_date">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Purchase date</h2>
@@ -131,7 +126,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.creation_date">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Creation date</h2>
@@ -140,7 +135,7 @@
             </ion-label>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.warranty_years">
             <ion-label>
               <ion-text color="secondary">
                 <h2 color="secondary">Warranty years</h2>

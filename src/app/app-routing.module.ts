@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   redirectTo: 'folder/Inbox',
+  //   pathMatch: 'full'
+  // },
   {
     path: '',
-    redirectTo: 'folder/Inbox',
-    pathMatch: 'full'
+    loadChildren: () => import('./pages/item/welcome/welcome.module').then( m => m.WelcomePageModule)
   },
   {
     path: 'folder/:id',
@@ -13,7 +17,11 @@ const routes: Routes = [
   },
   {
     path: 'welcome',
-    loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
+    loadChildren: () => import('./pages/item/welcome/welcome.module').then( m => m.WelcomePageModule)
+  },
+  {
+    path: 'create',
+    loadChildren: () => import('./pages/item/create/create.module').then( m => m.CreatePageModule)
   }
 ];
 
