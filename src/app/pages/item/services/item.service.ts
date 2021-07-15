@@ -48,9 +48,17 @@ export class ItemService {
     return this.http.post(endpoint, item);
   }
 
-  getHomes() {
+  getHomeDescriptions() {
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/homes`;
+    const endpoint = this.server + `/homes/description`;
+
+    /* Devolver datos */
+    return this.http.get(endpoint);
+  }
+
+  getHomeAddresses() {
+    /* Dirección del servidor - petición */
+    const endpoint = this.server + `/homes/address`;
 
     /* Devolver datos */
     return this.http.get(endpoint);

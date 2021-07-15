@@ -134,14 +134,14 @@
             <ion-text color="primary">
               <h1>Home</h1>
             </ion-text>
-            <ion-chip color="primary" class="ion-margin-start" (click)="pickerHomes()">
-              <ion-label color="primary">Select home</ion-label>
-            </ion-chip>
           </ion-item>
 
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
+              <ion-chip color="primary" class="ion-margin-start" (click)="pickerHomeDescriptions()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="description" name="description" placeholder="Home description"
@@ -153,6 +153,9 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Address:</ion-label>
+              <ion-chip color="primary" class="ion-margin-start" (click)="pickerHomeAddresses()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="address" name="address" placeholder="Home address"
@@ -167,14 +170,14 @@
             <ion-text color="primary">
               <h1>Room</h1>
             </ion-text>
-            <ion-chip color="primary" class="ion-margin-start" (click)="pickerRooms()">
-              <ion-label color="primary">Select room</ion-label>
-            </ion-chip>
           </ion-item>
 
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
+              <ion-chip color="primary" class="ion-margin-start" (click)="pickerRooms()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="description" name="description" placeholder="Room description"
@@ -200,14 +203,14 @@
             <ion-text color="primary">
               <h1>Container</h1>
             </ion-text>
-            <ion-chip color="primary" class="ion-margin-start" (click)="pickerContainers()">
-              <ion-label color="primary">Select container</ion-label>
-            </ion-chip>
           </ion-item>
 
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
+              <ion-chip color="primary" class="ion-margin-start" (click)="pickerContainerDescriptions()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="description" name="description"
@@ -219,6 +222,9 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Color:</ion-label>
+              <ion-chip color="primary" class="ion-margin-start" (click)="pickerContainerColors()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="color" name="color" placeholder="Container color"

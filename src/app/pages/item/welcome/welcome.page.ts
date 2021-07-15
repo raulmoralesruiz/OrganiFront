@@ -3,6 +3,7 @@ import { ItemService } from '../services/item.service';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { stringify } from '@angular/compiler/src/util';
 import { ItemInterface } from '../models/item.interface';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome',
@@ -10,12 +11,11 @@ import { ItemInterface } from '../models/item.interface';
   styleUrls: ['./welcome.page.scss'],
 })
 export class WelcomePage implements OnInit {
-  
   /* Listado de artículos */
   items: ItemInterface[] = [];
   /* Bandera que activa/desactiva la vista de todos los artículos */
-  allItemsView: boolean = false
-  
+  allItemsView: boolean = false;
+
   /* Cadena de texto utilizada en la búsqueda de artículos por descripción */
   itemDescription: string = '';
   /* Artículos encontrados en la búsqueda de artículos por descripción */
@@ -25,10 +25,13 @@ export class WelcomePage implements OnInit {
   detailsActivated: boolean = false;
 
   /* Índice del artículo mostrado */
-  currentDisplayIndex: number = -1;
+  itemSearchIndex: number = -1;
+  itemShowAllIndex: number = -1;
 
-
-  constructor(private itemService: ItemService) {}
+  constructor(
+    private itemService: ItemService,
+    private actionSheetController: ActionSheetController
+  ) {}
 
   ngOnInit() {
     this.getAllItems();
@@ -58,14 +61,25 @@ export class WelcomePage implements OnInit {
   }
 
   /* Método que oculta / muestra el contenido de un artículo */
-  hide(index: number) {
+  hideSearchItems(index: number) {
     //Reset the index if the current item index is same as the item index passed on button click
-    if (this.currentDisplayIndex == index) {
-      this.currentDisplayIndex = -1;
+    if (this.itemSearchIndex == index) {
+      this.itemSearchIndex = -1;
       return;
     }
     //Set the current index to the item index passed from template. If you click on item number 3, only 3rd item details will be visible
-    this.currentDisplayIndex = index;
+    this.itemSearchIndex = index;
+  }
+
+  /* Método que oculta / muestra el contenido de un artículo */
+  hideShowAllItems(index: number) {
+    //Reset the index if the current item index is same as the item index passed on button click
+    if (this.itemShowAllIndex == index) {
+      this.itemShowAllIndex = -1;
+      return;
+    }
+    //Set the current index to the item index passed from template. If you click on item number 3, only 3rd item details will be visible
+    this.itemShowAllIndex = index;
   }
 
   /* Método que muestra el embalaje de un artículo */
@@ -90,4 +104,32 @@ export class WelcomePage implements OnInit {
       : (this.allItemsView = false);
   }
 
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Items actions',
+      backdropDismiss: false,
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: this.allItemsView == false ? 'Show all items' : 'Hide all items',
+          cssClass: 'primaryIconColor',
+          icon: 'albums',
+          handler: () => {
+            this.toggleViewAllItems();
+          },
+        },
+        {
+          text: 'Cerrar',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {},
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  showActionsheet() {
+    this.presentActionSheet();
+  }
 }

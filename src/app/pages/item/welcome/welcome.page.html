@@ -10,18 +10,24 @@
 
 <ion-content>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="list-outline" (click)="showActionsheet()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div id="items-search">
     <div *ngIf="itemDescription.length > 2">
       <ion-card *ngFor="let item of itemsSearched, let i = index">
-        <ion-card-header (click)="hide(i)" color="secondary">
+        <ion-card-header (click)="hideSearchItems(i)" color="primary">
           <ion-card-title>{{item.description}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content *ngIf="currentDisplayIndex==i" class="ion-margin-top">
+        <ion-card-content *ngIf="itemSearchIndex==i" class="ion-margin-top">
           
           <ion-item>
             <ion-label>
-              <ion-text color="secondary">
-                <h2 color="secondary">Home</h2>
+              <ion-text color="primary">
+                <h2 color="primary">Home</h2>
               </ion-text>
               <p>{{item.home.description}}</p>
             </ion-label>
@@ -29,8 +35,8 @@
   
           <ion-item>
             <ion-label>
-              <ion-text color="secondary">
-                <h2 color="secondary">Room</h2>
+              <ion-text color="primary">
+                <h2 color="primary">Room</h2>
               </ion-text>
               <p>{{item.room.description}}</p>
             </ion-label>
@@ -38,8 +44,8 @@
   
           <ion-item>
             <ion-label>
-              <ion-text color="secondary">
-                <h2 color="secondary">Container</h2>
+              <ion-text color="primary">
+                <h2 color="primary">Container</h2>
               </ion-text>
               <p>{{item.container.description}}</p>
             </ion-label>
@@ -47,8 +53,8 @@
   
           <ion-item>
             <ion-label>
-              <ion-text color="secondary">
-                <h2 color="secondary">Compartment</h2>
+              <ion-text color="primary">
+                <h2 color="primary">Compartment</h2>
               </ion-text>
               <p>{{item.compartment.row}}-{{item.compartment.column}}</p>
             </ion-label>
@@ -57,8 +63,8 @@
           <div *ngIf="detailsActivated">
             <ion-item *ngIf="item.color">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Color</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Color</h2>
                 </ion-text>
                 <p>{{item.color}}</p>
               </ion-label>
@@ -66,8 +72,8 @@
   
             <ion-item *ngIf="item.brand">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Brand</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Brand</h2>
                 </ion-text>
                 <p>{{item.brand}}</p>
               </ion-label>
@@ -75,8 +81,8 @@
   
             <ion-item *ngIf="item.model">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Model</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Model</h2>
                 </ion-text>
                 <p>{{item.model}}</p>
               </ion-label>
@@ -84,8 +90,8 @@
   
             <ion-item *ngIf="item.group">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Group</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Group</h2>
                 </ion-text>
                 <p>{{item.group}}</p>
               </ion-label>
@@ -93,8 +99,8 @@
   
             <ion-item *ngIf="item.price">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Price</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Price</h2>
                 </ion-text>
                 <p>{{item.price}}</p>
               </ion-label>
@@ -102,8 +108,8 @@
   
             <ion-item *ngIf="item.store_link">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Store link</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Store link</h2>
                 </ion-text>
                 <p>{{item.store_link}}</p>
               </ion-label>
@@ -111,8 +117,8 @@
   
             <ion-item *ngIf="item.serial_number">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Serial number</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Serial number</h2>
                 </ion-text>
                 <p>{{item.serial_number}}</p>
               </ion-label>
@@ -120,8 +126,8 @@
   
             <ion-item *ngIf="item.purchase_date">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Purchase date</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Purchase date</h2>
                 </ion-text>
                 <p>{{item.purchase_date.$date | date}}</p>
               </ion-label>
@@ -129,8 +135,8 @@
   
             <ion-item *ngIf="item.creation_date">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Creation date</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Creation date</h2>
                 </ion-text>
                 <p>{{item.creation_date.$date | date}}</p>
               </ion-label>
@@ -138,8 +144,8 @@
   
             <ion-item *ngIf="item.warranty_years">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Warranty years</h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Warranty years</h2>
                 </ion-text>
                 <p>{{item.warranty_years}}</p>
               </ion-label>
@@ -147,8 +153,8 @@
   
             <ion-item *ngIf="item.package" (click)="showItemPackage(item.package.$oid)">
               <ion-label>
-                <ion-text color="secondary">
-                  <h2 color="secondary">Package <ion-icon name="cube-outline" class="ion-justify-content-center"></ion-icon></h2>
+                <ion-text color="primary">
+                  <h2 color="primary">Package <ion-icon name="cube-outline" class="ion-justify-content-center"></ion-icon></h2>
                 </ion-text>
                 <p>View package</p>
               </ion-label>
@@ -169,36 +175,25 @@
   
     <div *ngIf="itemDescription.length > 2 && itemsSearched.length == 0">
       <ion-card>
-        <ion-card-header color="secondary">
+        <ion-card-header color="primary">
           <ion-card-title>Item not found</ion-card-title>
         </ion-card-header>
         <ion-card-content class="ion-margin-top">
         
-          <ion-label>No se han obtenido resultados</ion-label>
+          <ion-label>No results have been obtained</ion-label>
         </ion-card-content>
       </ion-card>
     </div>
-  </div>
-
-  
-  <div class="ion-text-center">
-    <ion-button *ngIf="!allItemsView" color="secondary" (click)="toggleViewAllItems()"> <!-- expand="block" fill="clear" shape="round" -->
-      Show all items
-    </ion-button>
-
-    <ion-button *ngIf="allItemsView" color="secondary" (click)="toggleViewAllItems()"> <!-- expand="block" fill="clear" shape="round" -->
-      Hide all items
-    </ion-button>
   </div>
   
 
   <div id="items-all">
     <div *ngIf="allItemsView">
       <ion-card *ngFor="let item of items, let i = index">
-        <ion-card-header (click)="hide(i)" color="secondary">
+        <ion-card-header (click)="hideShowAllItems(i)" color="secondary">
           <ion-card-title>{{item.description}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content *ngIf="currentDisplayIndex==i" class="ion-margin-top">
+        <ion-card-content *ngIf="itemShowAllIndex==i" class="ion-margin-top">
           
           <ion-item>
             <ion-label>
@@ -354,11 +349,16 @@
         <ion-card-header color="secondary">
           <ion-card-title>No items exist</ion-card-title>
         </ion-card-header>
-        <ion-card-content class="ion-margin-top ion-text-center">
-          <ion-label>You can create one by clicking the following button</ion-label>
-          <ion-button class="ion-margin-top" routerLink="/create">
-            Create item
-          </ion-button>
+        <ion-card-content class="ion-margin-top">
+          <div>
+            <ion-label>You can create one by clicking the following button</ion-label>
+          </div>
+
+          <div class="ion-text-center">
+            <ion-button class="ion-margin-top" routerLink="/create">
+              Create item
+            </ion-button>
+          </div>
         </ion-card-content>
       </ion-card>
     </div>

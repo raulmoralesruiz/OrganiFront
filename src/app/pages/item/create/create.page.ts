@@ -96,23 +96,22 @@ export class CreatePage implements OnInit {
   /* Variable que muestra aviso 'cargando'  */
   loading: HTMLIonLoadingElement;
 
-  homes: any;
-  homeDescription: any;
-  homeAddress: any;
-
-  rooms: any;
-  roomDescription: any;
-
-  /* Arrays de contenedores obtenidos del servidor */
+  /* Arrays obtenidos del servidor */
+  homesDescriptionsArray: any;
+  homesAddressesArray: any;
+  roomsArray: any;
   containersDescriptionsArray: any;
   containersColorsArray: any;
+
   /* Variables que almacenan el valor del picker seleccionado */
+  homeDescription: any;
+  homeAddress: any;
+  roomDescription: any;
   containerDescription: any;
   containerColor: any;
 
   /* Opciones del picker de fecha */
   datePickerOptions = {
-    // Propiedad que obliga al usuario a utilizar los botones del picker
     backdropDismiss: false,
   };
 
@@ -176,38 +175,66 @@ export class CreatePage implements OnInit {
     return objeto;
   }
 
+
   getHomes() {
-    this.itemService.getHomes().subscribe((res) => {
-      this.homes = res;
+    this.itemService.getHomeDescriptions().subscribe((res) => {
+      this.homesDescriptionsArray = res;
+    });
+
+    this.itemService.getHomeAddresses().subscribe((res) => {
+      this.homesAddressesArray = res;
     });
   }
 
   getHomeDescriptions() {
     let options = [];
-    this.homes.forEach((x) => {
-      options.push({ text: x.description, value: x.description });
+    this.homesDescriptionsArray.forEach((x) => {
+      options.push({ text: x, value: x });
     });
     return options;
   }
 
   getHomeAddresses() {
     let options = [];
-    this.homes.forEach((x) => {
-      options.push({ text: x.address, value: x.address });
+    this.homesAddressesArray.forEach((x) => {
+      options.push({ text: x, value: x });
     });
     return options;
   }
 
-  async pickerHomes() {
+  async pickerHomeDescriptions() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
       columns: [
         {
-          name: 'Description',
+          name: 'description',
           options: this.getHomeDescriptions(),
         },
+      ],
+      buttons: [
         {
-          name: 'Address',
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: (value) => {},
+        },
+        {
+          text: 'Confirmar',
+          handler: (value) => {
+            this.homeDescription = value.description.value;
+          },
+        },
+      ],
+    });
+
+    await picker.present();
+  }
+
+  async pickerHomeAddresses() {
+    const picker = await this.pickerController.create({
+      backdropDismiss: false,
+      columns: [
+        {
+          name: 'address',
           options: this.getHomeAddresses(),
         },
       ],
@@ -220,8 +247,7 @@ export class CreatePage implements OnInit {
         {
           text: 'Confirmar',
           handler: (value) => {
-            this.homeDescription = value.Description.value;
-            this.homeAddress = value.Address.value;
+            this.homeAddress = value.address.value;
           },
         },
       ],
@@ -232,13 +258,13 @@ export class CreatePage implements OnInit {
 
   getRooms() {
     this.itemService.getRooms().subscribe((res) => {
-      this.rooms = res;
+      this.roomsArray = res;
     });
   }
 
   getRoomDescriptions() {
     let options = [];
-    this.rooms.forEach((x) => {
+    this.roomsArray.forEach((x) => {
       options.push({ text: x, value: x });
     });
     return options;
@@ -297,18 +323,14 @@ export class CreatePage implements OnInit {
     return options;
   }
 
-  async pickerContainers() {
+  async pickerContainerDescriptions() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
       columns: [
         {
           name: 'Description',
           options: this.getContainerDescriptions(),
-        },
-        {
-          name: 'Color',
-          options: this.getContainerColors(),
-        },
+        }
       ],
       buttons: [
         {
@@ -320,9 +342,21 @@ export class CreatePage implements OnInit {
           text: 'Confirmar',
           handler: (value) => {
             this.containerDescription = value.Description.value;
-            this.containerColor = value.Color.value;
           },
         },
+      ],
+    });
+
+    await picker.present();
+  }
+
+  async pickerContainerColors() {
+    const picker = await this.pickerController.create({
+      backdropDismiss: false,
+      columns: [{ name: 'Color', options: this.getContainerColors() }],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel', handler: (value) => {}},
+        { text: 'Confirmar', handler: (value) => { this.containerColor = value.Color.value; } },
       ],
     });
 
