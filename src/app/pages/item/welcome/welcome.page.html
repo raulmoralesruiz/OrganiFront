@@ -111,7 +111,9 @@
                 <ion-text color="primary">
                   <h2 color="primary">Store link</h2>
                 </ion-text>
-                <p>{{item.store_link}}</p>
+                <a [href]="item.store_link" target="_blank" rel="noopener noreferrer">
+                  <ion-text color="tertiary">{{item.store_link}}</ion-text>
+                </a>
               </ion-label>
             </ion-item>
   
