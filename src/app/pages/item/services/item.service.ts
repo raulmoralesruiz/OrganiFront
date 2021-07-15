@@ -32,6 +32,14 @@ export class ItemService {
     return this.http.post(endpoint, description);
   }
 
+  getItemById(id: string): Observable<any> {
+    /* Dirección del servidor - petición */
+    const endpoint = this.server + `/item/${id}`;
+
+    /* Devolver datos */
+    return this.http.get(endpoint);
+  }
+
   createItem(item: ItemInterface): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item`;

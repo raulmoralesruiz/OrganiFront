@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, PickerController } from '@ionic/angular';
-import { ItemInterface } from '../models/item.interface';
 import { ItemService } from '../services/item.service';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-create',

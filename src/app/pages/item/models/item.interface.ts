@@ -30,4 +30,7 @@ export interface ItemInterface {
     row: string;
     column: string;
   };
+  package?: {
+    $oid: string
+  }
 }
