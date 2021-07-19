@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, PickerController } from '@ionic/angular';
+import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { ItemService } from '../services/item.service';
 
 @Component({
@@ -97,18 +98,20 @@ export class CreatePage implements OnInit {
   loading: HTMLIonLoadingElement;
 
   /* Arrays obtenidos del servidor */
-  homesDescriptionsArray: any;
-  homesAddressesArray: any;
-  roomsArray: any;
-  containersDescriptionsArray: any;
-  containersColorsArray: any;
+  homesDescriptionsArray: any = [];
+  roomsArray: any = [];
+  containersArray: any = [];
+  compartmentsArray: any = [];
 
   /* Variables que almacenan el valor del picker seleccionado */
   homeDescription: any;
   homeAddress: any;
   roomDescription: any;
+  roomFloor: any;
   containerDescription: any;
   containerColor: any;
+  compartmentRow: any;
+  compartmentColumn: any;
 
   /* Opciones del picker de fecha */
   datePickerOptions = {
@@ -123,8 +126,6 @@ export class CreatePage implements OnInit {
 
   ngOnInit() {
     this.getHomes();
-    this.getRooms();
-    this.getContainers();
   }
 
   createItem() {
@@ -141,8 +142,6 @@ export class CreatePage implements OnInit {
     this.itemService.createItem(itemFormObject).subscribe((response) => {
       /* Se resetea el formulario */
       this.createItemForm.reset();
-
-      console.log(response);
 
       /* Se elimina aviso de carga */
       // this.loading.dismiss();
@@ -175,40 +174,32 @@ export class CreatePage implements OnInit {
     return objeto;
   }
 
+  /* -------------------- HOME -------------------- */
 
+  /* Método que obtiene los hogares */
   getHomes() {
-    this.itemService.getHomeDescriptions().subscribe((res) => {
+    this.itemService.getHomes().subscribe((res) => {
       this.homesDescriptionsArray = res;
     });
-
-    this.itemService.getHomeAddresses().subscribe((res) => {
-      this.homesAddressesArray = res;
-    });
   }
 
-  getHomeDescriptions() {
+  /* Método que organiza los hogares en un array para el picker */
+  organizeHomes() {
     let options = [];
     this.homesDescriptionsArray.forEach((x) => {
-      options.push({ text: x, value: x });
+      options.push({ text: x.description, value: x });
     });
     return options;
   }
 
-  getHomeAddresses() {
-    let options = [];
-    this.homesAddressesArray.forEach((x) => {
-      options.push({ text: x, value: x });
-    });
-    return options;
-  }
-
+  /* picker de hogares */
   async pickerHomeDescriptions() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
       columns: [
         {
           name: 'description',
-          options: this.getHomeDescriptions(),
+          options: this.organizeHomes(),
         },
       ],
       buttons: [
@@ -220,7 +211,17 @@ export class CreatePage implements OnInit {
         {
           text: 'Confirmar',
           handler: (value) => {
-            this.homeDescription = value.description.value;
+            /* Se guarda el valor seleccionado */
+            this.homeDescription = value.description.value.description;
+            this.homeAddress = value.description.value.address;
+
+            /* Restablecer valores para comenzar la búsqueda desde cero */
+            this.resetRoom();
+            this.resetContainer();
+            this.resetCompartment();
+
+            /* Obtener habitaciones correspondientes al hogar */
+            this.getRooms()
           },
         },
       ],
@@ -229,54 +230,36 @@ export class CreatePage implements OnInit {
     await picker.present();
   }
 
-  async pickerHomeAddresses() {
-    const picker = await this.pickerController.create({
-      backdropDismiss: false,
-      columns: [
-        {
-          name: 'address',
-          options: this.getHomeAddresses(),
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: (value) => {},
-        },
-        {
-          text: 'Confirmar',
-          handler: (value) => {
-            this.homeAddress = value.address.value;
-          },
-        },
-      ],
-    });
+  /* -------------------- ROOM -------------------- */
 
-    await picker.present();
-  }
-
+  /* Método que obtiene las habitaciones */
   getRooms() {
-    this.itemService.getRooms().subscribe((res) => {
+    let body: SearchDescriptionInterface = {
+      description: this.homeDescription,
+    };
+    
+    this.itemService.getRooms(body).subscribe((res) => {
       this.roomsArray = res;
     });
   }
 
-  getRoomDescriptions() {
+  /* Método que organiza las habitaciones en un array para el picker */
+  organizeRooms() {
     let options = [];
     this.roomsArray.forEach((x) => {
-      options.push({ text: x, value: x });
+      options.push({ text: x.description, value: x });
     });
     return options;
   }
 
+  /* picker de habitaciones */
   async pickerRooms() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
       columns: [
         {
           name: 'Rooms',
-          options: this.getRoomDescriptions(),
+          options: this.organizeRooms(),
         },
       ],
       buttons: [
@@ -288,7 +271,16 @@ export class CreatePage implements OnInit {
         {
           text: 'Confirmar',
           handler: (value) => {
-            this.roomDescription = value.Rooms.value;
+            /* Se guarda el valor seleccionado */
+            this.roomDescription = value.Rooms.value.description;
+            this.roomFloor = value.Rooms.value.floor;
+
+            /* Restablecer valores para comenzar la búsqueda desde cero */
+            this.resetContainer();
+            this.resetCompartment();
+
+            /* Obtener contenedores correspondientes a la habitación */
+            this.getContainers()
           },
         },
       ],
@@ -297,39 +289,43 @@ export class CreatePage implements OnInit {
     await picker.present();
   }
 
+  /* Método para resetear los valores de las habitaciones */
+  resetRoom() {
+    this.roomDescription = null;
+    this.roomFloor = null;
+  }
+
+  /* -------------------- CONTAINER -------------------- */
+
+  /* Método que obtiene los contenedores */
   getContainers() {
-    this.itemService.getContainerDescriptions().subscribe((res) => {
-      this.containersDescriptionsArray = res;
-    });
-
-    this.itemService.getContainerColors().subscribe((res) => {
-      this.containersColorsArray = res;
+    let body: any = {
+      home: this.homeDescription,
+      room: this.roomDescription,
+    };
+    
+    this.itemService.getContainers(body).subscribe((res) => {
+      this.containersArray = res;
     });
   }
 
-  getContainerDescriptions() {
+  /* Método que organiza las habitaciones en un array para el picker */
+  organizeContainers() {
     let options = [];
-    this.containersDescriptionsArray.forEach((x) => {
-      options.push({ text: x, value: x });
+    this.containersArray.forEach((x) => {
+      options.push({ text: x.description, value: x });
     });
     return options;
   }
 
-  getContainerColors() {
-    let options = [];
-    this.containersColorsArray.forEach((x) => {
-      options.push({ text: x, value: x });
-    });
-    return options;
-  }
-
-  async pickerContainerDescriptions() {
+  /* picker de contenedores */
+  async pickerContainers() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
       columns: [
         {
           name: 'Description',
-          options: this.getContainerDescriptions(),
+          options: this.organizeContainers(),
         }
       ],
       buttons: [
@@ -341,7 +337,15 @@ export class CreatePage implements OnInit {
         {
           text: 'Confirmar',
           handler: (value) => {
-            this.containerDescription = value.Description.value;
+            /* Se guarda el valor seleccionado */
+            this.containerDescription = value.Description.value.description;
+            this.containerColor = value.Description.value.color;
+
+            /* Restablecer valores para comenzar la búsqueda desde cero */
+            this.resetCompartment();
+
+            /* Obtener habitaciones correspondientes al hogar */
+            this.getCompartments()
           },
         },
       ],
@@ -350,18 +354,72 @@ export class CreatePage implements OnInit {
     await picker.present();
   }
 
-  async pickerContainerColors() {
+  /* Método para resetear los valores de los contenedores */
+  resetContainer() {
+    this.containerDescription = null;
+    this.containerColor = null;
+  }
+
+  /* -------------------- COMPARTMENT -------------------- */
+
+  /* Método que obtiene los compartimentos */
+  getCompartments() {
+    let body: any = {
+      home: this.homeDescription,
+      room: this.roomDescription,
+      container: this.containerDescription,
+    };
+    
+    this.itemService.getCompartments(body).subscribe((res) => {
+      this.compartmentsArray = res;
+    });
+  }
+
+  /* Método que organiza los compartimentos en un array para el picker */
+  organizeCompartments() {
+    let options = [];
+    this.compartmentsArray.forEach((x) => {
+      options.push({ text: `${x.row}-${x.column}`, value: x });
+    });
+    return options;
+  }
+
+  /* picker de compartimentos */
+  async pickerCompartments() {
     const picker = await this.pickerController.create({
       backdropDismiss: false,
-      columns: [{ name: 'Color', options: this.getContainerColors() }],
+      columns: [
+        {
+          name: 'Description',
+          options: this.organizeCompartments(),
+        }
+      ],
       buttons: [
-        { text: 'Cancelar', role: 'cancel', handler: (value) => {}},
-        { text: 'Confirmar', handler: (value) => { this.containerColor = value.Color.value; } },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: (value) => {},
+        },
+        {
+          text: 'Confirmar',
+          handler: (value) => {
+            this.compartmentRow = value.Description.value.row;
+            this.compartmentColumn = value.Description.value.column;
+          },
+        },
       ],
     });
 
     await picker.present();
   }
+
+  /* Método para resetear los valores de los compartimentos */
+  resetCompartment() {
+    this.compartmentRow = null;
+    this.compartmentColumn = null;
+  }
+
+  /* -------------------- OTHERS -------------------- */
 
   showLoading() {
     this.presentLoading();

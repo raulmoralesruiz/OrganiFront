@@ -1,5 +1,7 @@
 {
   "name": "organi",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

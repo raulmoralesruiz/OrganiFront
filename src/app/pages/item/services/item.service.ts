@@ -48,44 +48,36 @@ export class ItemService {
     return this.http.post(endpoint, item);
   }
 
-  getHomeDescriptions() {
+  getHomes() {
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/homes/description`;
+    const endpoint = this.server + `/homes`;
 
     /* Devolver datos */
     return this.http.get(endpoint);
   }
 
-  getHomeAddresses() {
-    /* Dirección del servidor - petición */
-    const endpoint = this.server + `/homes/address`;
-
-    /* Devolver datos */
-    return this.http.get(endpoint);
-  }
-
-  getRooms() {
+  getRooms(description: SearchDescriptionInterface): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/rooms`;
 
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.post(endpoint, description);
   }
 
-  getContainerDescriptions() {
+  getContainers(body: any): Observable<any> {
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/containers/description`;
+    const endpoint = this.server + `/containers`;
 
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.post(endpoint, body);
   }
 
-  getContainerColors() {
+  getCompartments(body: any): Observable<any> {
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/containers/color`;
+    const endpoint = this.server + `/compartments`;
 
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.post(endpoint, body);
   }
 
 }

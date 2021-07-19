@@ -139,7 +139,7 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
-              <ion-chip color="primary" class="ion-margin-start" (click)="pickerHomeDescriptions()">
+              <ion-chip *ngIf="homesDescriptionsArray.length > 0" color="primary" class="ion-margin-start" (click)="pickerHomeDescriptions()">
                 <ion-label color="primary">Select</ion-label>
               </ion-chip>
             </ion-item>
@@ -153,9 +153,6 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Address:</ion-label>
-              <ion-chip color="primary" class="ion-margin-start" (click)="pickerHomeAddresses()">
-                <ion-label color="primary">Select</ion-label>
-              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="address" name="address" placeholder="Home address"
@@ -175,7 +172,7 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
-              <ion-chip color="primary" class="ion-margin-start" (click)="pickerRooms()">
+              <ion-chip *ngIf="roomsArray.length > 0" color="primary" class="ion-margin-start" (click)="pickerRooms()">
                 <ion-label color="primary">Select</ion-label>
               </ion-chip>
             </ion-item>
@@ -191,7 +188,8 @@
               <ion-label>Floor:</ion-label>
             </ion-item>
             <ion-item>
-              <ion-input type="number" formControlName="floor" name="floor" placeholder="Room floor" autocomplete="off">
+              <ion-input type="number" formControlName="floor" name="floor" placeholder="Room floor" autocomplete="off"
+                [value]="roomFloor">
               </ion-input>
             </ion-item>
           </ion-list>
@@ -208,7 +206,7 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Description:</ion-label>
-              <ion-chip color="primary" class="ion-margin-start" (click)="pickerContainerDescriptions()">
+              <ion-chip *ngIf="containersArray.length > 0" color="primary" class="ion-margin-start" (click)="pickerContainers()">
                 <ion-label color="primary">Select</ion-label>
               </ion-chip>
             </ion-item>
@@ -222,9 +220,6 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Color:</ion-label>
-              <ion-chip color="primary" class="ion-margin-start" (click)="pickerContainerColors()">
-                <ion-label color="primary">Select</ion-label>
-              </ion-chip>
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="color" name="color" placeholder="Container color"
@@ -242,9 +237,12 @@
           <ion-list>
             <ion-item lines="none">
               <ion-label>Row:</ion-label>
+              <ion-chip *ngIf="compartmentsArray.length > 0" color="primary" class="ion-margin-start" (click)="pickerCompartments()">
+                <ion-label color="primary">Select</ion-label>
+              </ion-chip>
             </ion-item>
             <ion-item>
-              <ion-input type="text" formControlName="row" name="row" placeholder="Compartment row" autocomplete="off">
+              <ion-input type="text" formControlName="row" name="row" placeholder="Compartment row" autocomplete="off" [value]="compartmentRow">
               </ion-input>
             </ion-item>
           </ion-list>
@@ -255,7 +253,7 @@
             </ion-item>
             <ion-item>
               <ion-input type="text" formControlName="column" name="column" placeholder="Compartment column"
-                autocomplete="off"></ion-input>
+                autocomplete="off" [value]="compartmentColumn"></ion-input>
             </ion-item>
           </ion-list>
         </div>
