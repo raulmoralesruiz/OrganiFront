@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ItemService } from '../services/item.service';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
-import { stringify } from '@angular/compiler/src/util';
 import { ItemInterface } from '../models/item.interface';
 import { ActionSheetController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ItemUpdateInterface } from '../models/item_update.interface';
 
 @Component({
   selector: 'app-welcome',
@@ -46,6 +46,9 @@ export class WelcomePage implements OnInit {
     'serial_number',
     // 'purchase_date',
     'warranty_years',
+    'home.description',
+    'room.description',
+    'container.description'
   ];
 
   constructor(
@@ -87,6 +90,28 @@ export class WelcomePage implements OnInit {
         this.itemsSearched = res;
       });
     }
+  }
+
+  searchItemByRoom(room_description: string) {
+    // se habilita búsqueda avanzada
+    this.enableAdvancedSearchView();
+
+    // se especifica el campo de búsqueda
+    this.selectSearch = 'room.description';
+    
+    // se especifica el valor de la búsqueda
+    this.itemDescription = room_description;
+  }
+
+  searchItemByField(room_description: string, field:string) {
+    // se habilita búsqueda avanzada
+    this.enableAdvancedSearchView();
+
+    // se especifica el campo de búsqueda
+    this.selectSearch = field;
+    
+    // se especifica el valor de la búsqueda
+    this.itemDescription = room_description;
   }
 
   /* Método que oculta / muestra los detalles de un artículo */
@@ -235,9 +260,7 @@ export class WelcomePage implements OnInit {
 
   /* Método que oculta / muestra los detalles de un artículo */
   enableAdvancedSearchView() {
-    this.itemDescription = 'aaa';
     this.advancedSearchView = true;
-
   }
 
   /* Método que oculta / muestra los detalles de un artículo */

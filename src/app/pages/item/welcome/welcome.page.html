@@ -30,7 +30,7 @@
 
 <ion-content>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="showActionsheet()">
+  <ion-fab class="ion-margin-bottom ion-margin-end" vertical="bottom" horizontal="end" slot="fixed" (click)="showActionsheet()">
     <ion-fab-button>
       <ion-icon name="list-outline"></ion-icon>
     </ion-fab-button>
@@ -44,7 +44,7 @@
         </ion-card-header>
         <ion-card-content *ngIf="itemSearchIndex==i" class="ion-margin-top">
           
-          <ion-item>
+          <ion-item (click)="searchItemByField(item.home.description, 'home.description')">
             <ion-label>
               <ion-text color="primary">
                 <h2 color="primary">Home</h2>
@@ -53,7 +53,8 @@
             </ion-label>
           </ion-item>
   
-          <ion-item>
+          <!-- <ion-item (click)="searchItemByRoom(item.room.description)"> -->
+          <ion-item (click)="searchItemByField(item.room.description, 'room.description')">
             <ion-label>
               <ion-text color="primary">
                 <h2 color="primary">Room</h2>
@@ -62,7 +63,7 @@
             </ion-label>
           </ion-item>
   
-          <ion-item>
+          <ion-item (click)="searchItemByField(item.container.description, 'container.description')">
             <ion-label>
               <ion-text color="primary">
                 <h2 color="primary">Container</h2>

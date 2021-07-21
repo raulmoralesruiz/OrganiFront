@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { ItemInterface } from '../models/item.interface';
+import { ItemUpdateInterface } from '../models/item_update.interface';
 
 @Injectable({
   providedIn: 'root'
