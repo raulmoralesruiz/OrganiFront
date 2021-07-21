@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ItemService } from '../services/item.service';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { stringify } from '@angular/compiler/src/util';
 import { ItemInterface } from '../models/item.interface';
 import { ActionSheetController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -24,13 +25,33 @@ export class WelcomePage implements OnInit {
   /* Bandera que activa/desactiva la vista de detalles de un artículo */
   detailsActivated: boolean = false;
 
+  /* Bandera que activa/desactiva la vista de acciones de un artículo */
+  actionsActivated: boolean = false;
+
   /* Índice del artículo mostrado */
   itemSearchIndex: number = -1;
   itemShowAllIndex: number = -1;
 
+  advancedSearchView: boolean = false;
+
+  selectSearch: string = 'description';
+  searchOptions: any[] = [
+    'description',
+    'color',
+    'brand',
+    'model',
+    'group',
+    // 'price',
+    'store_link',
+    'serial_number',
+    // 'purchase_date',
+    'warranty_years',
+  ];
+
   constructor(
     private itemService: ItemService,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -53,11 +74,37 @@ export class WelcomePage implements OnInit {
     }
   }
 
+  /* Método que muestra artículos buscando por cualquier campo definido */
+  searchItem() {
+    let body: any = {
+      [this.selectSearch]: this.itemDescription,
+    };
+    
+    // Se comprueba si la descripción tiene al menos 3 caracteres
+    if (this.itemDescription.length > 2) {
+      // Se ejecuta la búsqueda
+      this.itemService.searchItem(body).subscribe((res) => {
+        this.itemsSearched = res;
+      });
+    }
+  }
+
   /* Método que oculta / muestra los detalles de un artículo */
   showHideDetails() {
     this.detailsActivated == false
       ? (this.detailsActivated = true)
       : (this.detailsActivated = false);
+  }
+
+  /* Método que oculta / muestra los detalles de un artículo */
+  showHideActions(id: string) {
+    this.actionsActivated == false
+      ? (this.actionsActivated = true)
+      : (this.actionsActivated = false);
+
+    if (this.actionsActivated) {
+      this.actionSheetOneItem(id);
+    }
   }
 
   /* Método que oculta / muestra el contenido de un artículo */
@@ -111,7 +158,8 @@ export class WelcomePage implements OnInit {
       cssClass: 'my-custom-class',
       buttons: [
         {
-          text: this.allItemsView == false ? 'Show all items' : 'Hide all items',
+          text:
+            this.allItemsView == false ? 'Show all items' : 'Hide all items',
           cssClass: 'primaryIconColor',
           icon: 'albums',
           handler: () => {
@@ -132,4 +180,72 @@ export class WelcomePage implements OnInit {
   showActionsheet() {
     this.presentActionSheet();
   }
+
+  /* Método que muestra el embalaje de un artículo */
+  deleteItem(id: string) {
+    this.itemService.deleteItemById(id).subscribe((res) => {
+      // borrar cadena de búsqueda
+      this.itemDescription = '';
+
+      // recargar lista de artículo
+      this.getAllItems();
+    });
+  }
+
+  async actionSheetOneItem(id: string) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Items actions',
+      backdropDismiss: false,
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Delete item',
+          role: 'destructive',
+          cssClass: 'dangerIconColor',
+          icon: 'trash',
+          handler: () => {
+            //eliminar
+            this.deleteItem(id);
+          },
+        },
+        {
+          text: 'Update item',
+          cssClass: 'primaryIconColor',
+          icon: 'create',
+          handler: () => {
+            console.log('update item..');
+            console.log(id);
+
+            // this.router.navigate(['/create']);
+          },
+        },
+        {
+          text: 'Cerrar',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            // cerrar action sheet del artículo
+            this.actionsActivated = false;
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  /* Método que oculta / muestra los detalles de un artículo */
+  enableAdvancedSearchView() {
+    this.itemDescription = 'aaa';
+    this.advancedSearchView = true;
+
+  }
+
+  /* Método que oculta / muestra los detalles de un artículo */
+  disableAdvancedSearchView() {
+    this.advancedSearchView = false;
+  }
+
+  // showActionsheetOneItem() {
+  //   this.actionSheetOneItem();
+  // }
 }

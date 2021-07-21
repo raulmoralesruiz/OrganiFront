@@ -1,4 +1,7 @@
 export interface ItemInterface {
+  _id?: {
+    $oid: string
+  }
   description: string;
   color?: string;
   brand?: string;

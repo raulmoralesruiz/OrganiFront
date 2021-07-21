@@ -30,3 +30,9 @@
     color: var(--ion-color-primary) !important;
   }
 }
+
+.dangerIconColor {
+  ion-icon {
+    color: var(--ion-color-danger) !important;
+  }
+}

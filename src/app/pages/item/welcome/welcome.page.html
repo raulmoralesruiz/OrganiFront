@@ -6,7 +6,27 @@
     <ion-title mode=ios color="primary" class="ion-text-center">Organi</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-searchbar color="primary" (ionChange)="getItemByDescription()" [(ngModel)]="itemDescription"></ion-searchbar>
+
+<ion-item lines="none">
+  <ion-searchbar *ngIf="!advancedSearchView" color="primary" (ionChange)="getItemByDescription()" [(ngModel)]="itemDescription"></ion-searchbar>
+  <ion-searchbar *ngIf="advancedSearchView" color="primary" (ionChange)="searchItem()" [(ngModel)]="itemDescription"
+  [disabled]="selectSearch == null"></ion-searchbar>
+  <ion-toggle [(ngModel)]="advancedSearchView"></ion-toggle>
+</ion-item>
+
+
+<ion-list lines="none" *ngIf="advancedSearchView">
+  <ion-item>
+    <ion-label>Search by ...</ion-label>
+    <ion-select interface="popover" placeholder="Select field!" 
+    [(ngModel)]="selectSearch">
+      <ion-select-option *ngFor="let field of searchOptions" [value]="field">
+        {{field}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
+
 
 <ion-content>
 
@@ -163,12 +183,15 @@
             </ion-item>
           </div>
   
-          <ion-button *ngIf="!detailsActivated" (click)="showHideDetails()" expand="block" fill="clear" shape="round">
+          <ion-button *ngIf="!detailsActivated" (click)="showHideDetails()" fill="clear" shape="round">
             Show details
           </ion-button>
-  
-          <ion-button *ngIf="detailsActivated" (click)="showHideDetails()" expand="block" fill="clear" shape="round">
+          <ion-button *ngIf="detailsActivated" (click)="showHideDetails()" fill="clear" shape="round">
             Hide details
+          </ion-button>
+
+          <ion-button (click)="showHideActions(item._id.$oid)" fill="clear" shape="round">
+            Show actions
           </ion-button>
   
         </ion-card-content>
@@ -334,12 +357,15 @@
             </ion-item>
           </div>
   
-          <ion-button *ngIf="!detailsActivated" (click)="showHideDetails()" expand="block" fill="clear" shape="round">
+          <ion-button *ngIf="!detailsActivated" (click)="showHideDetails()" fill="clear" shape="round">
             Show details
           </ion-button>
-  
-          <ion-button *ngIf="detailsActivated" (click)="showHideDetails()" expand="block" fill="clear" shape="round">
+          <ion-button *ngIf="detailsActivated" (click)="showHideDetails()" fill="clear" shape="round">
             Hide details
+          </ion-button>
+
+          <ion-button (click)="showHideActions(item._id.$oid)" fill="clear" shape="round">
+            Show actions
           </ion-button>
   
         </ion-card-content>

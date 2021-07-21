@@ -11,6 +11,7 @@ import { ItemInterface } from '../models/item.interface';
 export class ItemService {
 
   server = environment.ip
+  idForUpdate: string = null;
 
   constructor(
     private http: HttpClient
@@ -30,6 +31,14 @@ export class ItemService {
 
     /* Devolver datos */
     return this.http.post(endpoint, description);
+  }
+
+  searchItem(field_value: string): Observable<any> {
+    /* Dirección del servidor - petición */
+    const endpoint = this.server + `/item/search`;
+
+    /* Devolver datos */
+    return this.http.post(endpoint, field_value);
   }
 
   getItemById(id: string): Observable<any> {
@@ -78,6 +87,14 @@ export class ItemService {
 
     /* Devolver datos */
     return this.http.post(endpoint, body);
+  }
+
+  deleteItemById(id: string): Observable<any> {
+    /* Dirección del servidor - petición */
+    const endpoint = this.server + `/item/${id}`;
+
+    /* Devolver datos */
+    return this.http.delete(endpoint);
   }
 
 }
