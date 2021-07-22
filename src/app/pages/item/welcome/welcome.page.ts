@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ItemService } from '../services/item.service';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { ItemInterface } from '../models/item.interface';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ItemUpdateInterface } from '../models/item_update.interface';
 
@@ -51,10 +51,17 @@ export class WelcomePage implements OnInit {
     'container.description'
   ];
 
+  customPopoverOptions: any = {
+    header: 'Filters',
+    message: 'Select a section',
+    // cssClass: 'custom-popover'
+  };
+
   constructor(
     private itemService: ItemService,
     private actionSheetController: ActionSheetController,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -192,7 +199,7 @@ export class WelcomePage implements OnInit {
           },
         },
         {
-          text: 'Cerrar',
+          text: 'Close',
           icon: 'close',
           role: 'cancel',
           handler: () => {},
@@ -230,7 +237,7 @@ export class WelcomePage implements OnInit {
           icon: 'trash',
           handler: () => {
             //eliminar
-            this.deleteItem(id);
+            this.showDeleteAlert(id);
           },
         },
         {
@@ -245,7 +252,7 @@ export class WelcomePage implements OnInit {
           },
         },
         {
-          text: 'Cerrar',
+          text: 'Close',
           icon: 'close',
           role: 'cancel',
           handler: () => {
@@ -268,7 +275,34 @@ export class WelcomePage implements OnInit {
     this.advancedSearchView = false;
   }
 
-  // showActionsheetOneItem() {
-  //   this.actionSheetOneItem();
-  // }
+  /* Método que limpia la barra de búesqueda */
+  checkSearchBar() {
+    if (!this.advancedSearchView) {
+      this.itemDescription = '';
+    }
+  }
+
+  async showDeleteAlert(id: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-danger',
+      header: 'Delete item',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.deleteItem(id);
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
 }

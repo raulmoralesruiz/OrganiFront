@@ -1,3 +1,13 @@
 ion-icon, ion-badge {
     vertical-align: middle;
 }
+
+ion-col {
+    margin: 0;
+    padding: 0;
+}
+
+ion-col ion-card {
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}

@@ -36,3 +36,21 @@
     color: var(--ion-color-danger) !important;
   }
 }
+
+// .custom-popover {
+//   --width: 80%;
+// }
+
+.alert-danger {
+  --background: #eb445a;
+
+  .alert-title.sc-ion-alert-md, .alert-title.sc-ion-alert-ios {
+      color: black;
+  }   
+  .alert-message.sc-ion-alert-md, .alert-message.sc-ion-alert-ios {
+      color: white;
+  }
+  .alert-button.sc-ion-alert-md, .alert-button.sc-ion-alert-ios {
+      color: black;
+  }
+}
