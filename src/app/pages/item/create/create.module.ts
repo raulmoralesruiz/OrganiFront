@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     CreatePageRoutingModule
   ],
-  declarations: [CreatePage]
+  declarations: [CreatePage],
+  providers: [DatePipe],
 })
 export class CreatePageModule {}

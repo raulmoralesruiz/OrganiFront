@@ -12,7 +12,9 @@
   <ion-card>
     <ion-card-header color="primary">
       <ion-card-title>Item</ion-card-title>
-      <ion-card-subtitle>Create new item</ion-card-subtitle>
+      <ion-card-subtitle *ngIf="idForUpdate == 'default'">Create item</ion-card-subtitle>
+      <ion-card-subtitle *ngIf="idForUpdate != 'default'">Update item</ion-card-subtitle>
+      
     </ion-card-header>
 
     <ion-card-content class="ion-margin-top">
@@ -122,7 +124,7 @@
           <ion-item>
             <!-- <ion-input type="date" formControlName="purchase_date" name="purchase_date" placeholder="Item purchase date" autocomplete="off"></ion-input> -->
             <ion-datetime display-format="YYYY/MM/DD" min="2000-01-01" max="2025-12-31" formControlName="purchase_date"
-          name="purchase_date" placeholder="Insert date" [pickerOptions]="datePickerOptions">
+          name="purchase_date" placeholder="Insert date" [pickerOptions]="datePickerOptions"> <!-- [value]="purchaseDate" -->
         </ion-datetime>
           </ion-item>
         </ion-list>
@@ -260,7 +262,10 @@
 
       </form>
 
-      <ion-button class="ion-margin-top" expand="block" (click)="createItem()" [disabled]="!createItemForm.valid">Create item</ion-button>
+      <ion-button *ngIf="idForUpdate == 'default'" class="ion-margin-top" expand="block" (click)="createItem()" [disabled]="!createItemForm.valid">Create item</ion-button>
+      <ion-button *ngIf="idForUpdate != 'default'" class="ion-margin-top" expand="block" (click)="updateItem()" [disabled]="!createItemForm.valid">Update item</ion-button>
+
+      
 
     </ion-card-content>
   </ion-card>

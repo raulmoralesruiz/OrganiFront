@@ -1,6 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoadingController, PickerController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { ItemInterface } from '../models/item.interface';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { ItemService } from '../services/item.service';
 
@@ -43,8 +47,10 @@ export class CreatePage implements OnInit {
       Validators.minLength(3),
       Validators.maxLength(100),
     ]),
+    // purchase_date: new FormGroup({
+    //   $date: new FormControl(null, [Validators.required]),
+    // }),
     purchase_date: new FormControl(null, []),
-    // item_purchase_date: new FormControl(null),
     warranty_years: new FormControl(null, [Validators.min(0)]),
     /* HOME */
     home: new FormGroup({
@@ -112,20 +118,86 @@ export class CreatePage implements OnInit {
   containerColor: any;
   compartmentRow: any;
   compartmentColumn: any;
+  purchaseDate: any;
 
   /* Opciones del picker de fecha */
   datePickerOptions = {
     backdropDismiss: false,
   };
 
+  idForUpdate:string;
+  subscription: Subscription;
+
   constructor(
     private itemService: ItemService,
     private loadingController: LoadingController,
-    private pickerController: PickerController
+    private pickerController: PickerController,
+    private datePipe: DatePipe,
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.getHomes();
+    this.getIdForUpdate();
+  }
+
+  testDate() {
+    console.log(this.purchaseDate);
+  }
+
+  getIdForUpdate() {
+    // se obtiene idForUpdate desde servicio
+    this.subscription = this.itemService.currentId.subscribe((currentId) => {
+      this.idForUpdate = currentId;
+
+      // se comprueba si se ha recibido el id de algún artículo
+      if (currentId != 'default') {
+        // se obtiene el artículo
+        this.itemService.getItemById(this.idForUpdate).subscribe((res) => {
+          const itemForUpdate: ItemInterface = res;
+          console.log(res);
+
+          // convertir purchase_date para introducirlo como ion-datetime.
+          if (itemForUpdate.purchase_date) {
+            // let date = itemForUpdate.purchase_date.$date;
+            // let date_string = this.datePipe.transform(date, 'yyyy-MM-dd');
+            // this.purchaseDate = date_string;
+            delete itemForUpdate.purchase_date;
+            // itemForUpdate.purchase_date.$date = new Date(date_string);
+          }
+
+          if (this.purchaseDate) {
+            
+          }
+
+          // se pintan los datos en el formulario
+          this.createItemForm.patchValue(itemForUpdate);
+        });
+      }
+    });
+  }
+
+  updateItem() {
+    /* Se crea objeto con los valores del formulario */
+    let itemFormObject = this.createItemForm.getRawValue();
+    itemFormObject = this.cleanObject(itemFormObject);
+
+    this.itemService.updateItem(this.idForUpdate, itemFormObject).subscribe((res) => {
+      console.log(res);
+
+      // restablecer id indicando valor por defecto
+      this.itemService.setIdForUpdate('default');
+
+      // se resetea el formulario
+      this.createItemForm.reset();
+
+      // redirigir a welcome, listado de artículos
+      this.router.navigate(['/welcome']);
+    });
+  }
+
+  transformDate(date) {
+    return this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 
   createItem() {

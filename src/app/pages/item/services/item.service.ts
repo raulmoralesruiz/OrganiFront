@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
 import { ItemInterface } from '../models/item.interface';
@@ -12,11 +12,27 @@ import { ItemUpdateInterface } from '../models/item_update.interface';
 export class ItemService {
 
   server = environment.ip
-  idForUpdate: string = null;
+  // idForUpdate: string = null;
+
+  private idForUpdate = new BehaviorSubject('default');
+  currentId = this.idForUpdate.asObservable();
+
 
   constructor(
     private http: HttpClient
   ) { }
+
+  setIdForUpdate(id_item: string) {
+    this.idForUpdate.next(id_item);
+  }
+
+  updateItem(itemId:string, body:ItemUpdateInterface) {
+    /* Dirección del servidor - petición */
+    const endpoint = this.server + `/item/${itemId}`;
+
+    /* Devolver datos */
+    return this.http.put(endpoint, body);
+  }
   
   getAllItems(): Observable<any> {
     /* Dirección del servidor - petición */

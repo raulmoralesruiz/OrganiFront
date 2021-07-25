@@ -5,6 +5,7 @@ import { ItemInterface } from '../models/item.interface';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ItemUpdateInterface } from '../models/item_update.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-welcome',
@@ -56,6 +57,10 @@ export class WelcomePage implements OnInit {
     message: 'Select a section',
     // cssClass: 'custom-popover'
   };
+
+  idForUpdate:string;
+  subscription: Subscription;
+
 
   constructor(
     private itemService: ItemService,
@@ -245,10 +250,11 @@ export class WelcomePage implements OnInit {
           cssClass: 'primaryIconColor',
           icon: 'create',
           handler: () => {
-            console.log('update item..');
-            console.log(id);
+            // se establece el id para enviarlo a componente create/update
+            this.itemService.setIdForUpdate(id);
 
-            // this.router.navigate(['/create']);
+            // se redirige a componente create/update
+            this.router.navigate(['/create']);
           },
         },
         {

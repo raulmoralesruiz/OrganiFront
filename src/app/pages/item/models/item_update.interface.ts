@@ -7,7 +7,10 @@ export interface ItemUpdateInterface {
   price?: number,
   store_link?: string,
   serial_number?: string,
-  purchase_date?: Date,
+//   purchase_date?: Date,
+  purchase_date?: {
+    $date: Date;
+  };
   warranty_years?: number,
   home?: {
       description?: string,
