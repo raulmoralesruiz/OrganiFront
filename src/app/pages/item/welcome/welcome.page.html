@@ -29,6 +29,14 @@
 
 <ion-content>
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="refresh-outline"
+      refreshingSpinner="crescent">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
   <ion-fab class="ion-margin-bottom ion-margin-end" vertical="bottom" horizontal="end" slot="fixed" (click)="showActionsheet()">
     <ion-fab-button>
       <ion-icon name="list-outline"></ion-icon>

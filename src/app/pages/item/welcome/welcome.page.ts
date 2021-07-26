@@ -311,4 +311,12 @@ export class WelcomePage implements OnInit {
     await alert.present();
   }
 
+  doRefresh(event) {
+    this.getAllItems();
+    
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
+
 }

@@ -118,7 +118,8 @@ export class CreatePage implements OnInit {
   containerColor: any;
   compartmentRow: any;
   compartmentColumn: any;
-  purchaseDate: any;
+  purchaseDateString: any;
+  purchaseDatePicker: any;
 
   /* Opciones del picker de fecha */
   datePickerOptions = {
@@ -141,8 +142,8 @@ export class CreatePage implements OnInit {
     this.getIdForUpdate();
   }
 
-  testDate() {
-    console.log(this.purchaseDate);
+  changePurchaseDateToPicker() {
+    this.purchaseDateString = null;
   }
 
   getIdForUpdate() {
@@ -155,19 +156,12 @@ export class CreatePage implements OnInit {
         // se obtiene el artículo
         this.itemService.getItemById(this.idForUpdate).subscribe((res) => {
           const itemForUpdate: ItemInterface = res;
-          console.log(res);
 
           // convertir purchase_date para introducirlo como ion-datetime.
           if (itemForUpdate.purchase_date) {
-            // let date = itemForUpdate.purchase_date.$date;
-            // let date_string = this.datePipe.transform(date, 'yyyy-MM-dd');
-            // this.purchaseDate = date_string;
-            delete itemForUpdate.purchase_date;
-            // itemForUpdate.purchase_date.$date = new Date(date_string);
-          }
-
-          if (this.purchaseDate) {
-            
+            let date = itemForUpdate.purchase_date.$date;
+            let date_string = this.datePipe.transform(date, 'yyyy-MM-dd');
+            this.purchaseDateString = date_string;
           }
 
           // se pintan los datos en el formulario
@@ -180,11 +174,15 @@ export class CreatePage implements OnInit {
   updateItem() {
     /* Se crea objeto con los valores del formulario */
     let itemFormObject = this.createItemForm.getRawValue();
+
+    // si purchase_date se ha modificado, se modifica el objeto 
+    if (this.purchaseDatePicker) {
+      itemFormObject.purchase_date = this.purchaseDatePicker;
+    }
+
     itemFormObject = this.cleanObject(itemFormObject);
 
     this.itemService.updateItem(this.idForUpdate, itemFormObject).subscribe((res) => {
-      console.log(res);
-
       // restablecer id indicando valor por defecto
       this.itemService.setIdForUpdate('default');
 
@@ -239,7 +237,7 @@ export class CreatePage implements OnInit {
 
     /* Se existe purchase_date, se convierte de fecha a string */
     if (objeto['purchase_date']) {
-      objeto['purchase_date'] = this.createItemForm.value.purchase_date.split('T')[0];
+      objeto['purchase_date'] = (objeto['purchase_date']).split('T')[0];
     }
 
     /* Se devuelve objeto sin valores nulos */
