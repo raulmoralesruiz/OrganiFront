@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, PickerController } from '@ionic/angular';
+import { AlertController, LoadingController, PickerController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ItemInterface } from '../models/item.interface';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
@@ -135,6 +135,7 @@ export class CreatePage implements OnInit {
     private pickerController: PickerController,
     private datePipe: DatePipe,
     private router: Router,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -175,7 +176,7 @@ export class CreatePage implements OnInit {
     /* Se crea objeto con los valores del formulario */
     let itemFormObject = this.createItemForm.getRawValue();
 
-    // si purchase_date se ha modificado, se modifica el objeto 
+    // si purchase_date se ha modificado, se modifica el objeto
     if (this.purchaseDatePicker) {
       itemFormObject.purchase_date = this.purchaseDatePicker;
     }
@@ -237,6 +238,7 @@ export class CreatePage implements OnInit {
 
     /* Se existe purchase_date, se convierte de fecha a string */
     if (objeto['purchase_date']) {
+      console.log(objeto['purchase_date']);
       objeto['purchase_date'] = (objeto['purchase_date']).split('T')[0];
     }
 
@@ -248,9 +250,25 @@ export class CreatePage implements OnInit {
 
   /* Método que obtiene los hogares */
   getHomes() {
-    this.itemService.getHomes().subscribe((res) => {
-      this.homesDescriptionsArray = res;
-    });
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    if (jwt) {
+      this.itemService.getHomes().subscribe((res) => {
+        this.homesDescriptionsArray = res;
+      },
+      (error) => {
+        // se muestra mensaje de error
+        if (error.status == 401) {
+          this.loginError();
+          this.router.navigate(['/login']);
+        }
+      }
+      );
+    } else {
+      this.loginError();
+      this.router.navigate(['/login']);
+    }
   }
 
   /* Método que organiza los hogares en un array para el picker */
@@ -307,7 +325,7 @@ export class CreatePage implements OnInit {
     let body: SearchDescriptionInterface = {
       description: this.homeDescription,
     };
-    
+
     this.itemService.getRooms(body).subscribe((res) => {
       this.roomsArray = res;
     });
@@ -373,7 +391,7 @@ export class CreatePage implements OnInit {
       home: this.homeDescription,
       room: this.roomDescription,
     };
-    
+
     this.itemService.getContainers(body).subscribe((res) => {
       this.containersArray = res;
     });
@@ -439,7 +457,7 @@ export class CreatePage implements OnInit {
       room: this.roomDescription,
       container: this.containerDescription,
     };
-    
+
     this.itemService.getCompartments(body).subscribe((res) => {
       this.compartmentsArray = res;
     });
@@ -506,5 +524,17 @@ export class CreatePage implements OnInit {
   async dismissLoading() {
     // this.loading.dismiss();
     return await this.loading.dismiss();
+  }
+
+  /* Alerta con mensaje de error */
+  async loginError() {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-danger',
+      header: 'Error 401',
+      message: 'Unauthorized access',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

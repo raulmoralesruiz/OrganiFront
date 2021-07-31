@@ -94,7 +94,7 @@ export class WelcomePage implements OnInit {
     let body: any = {
       [this.selectSearch]: this.itemDescription,
     };
-    
+
     // Se comprueba si la descripción tiene al menos 3 caracteres
     if (this.itemDescription.length > 2) {
       // Se ejecuta la búsqueda
@@ -110,7 +110,7 @@ export class WelcomePage implements OnInit {
 
     // se especifica el campo de búsqueda
     this.selectSearch = 'room.description';
-    
+
     // se especifica el valor de la búsqueda
     this.itemDescription = room_description;
   }
@@ -121,7 +121,7 @@ export class WelcomePage implements OnInit {
 
     // se especifica el campo de búsqueda
     this.selectSearch = field;
-    
+
     // se especifica el valor de la búsqueda
     this.itemDescription = room_description;
   }
@@ -175,9 +175,26 @@ export class WelcomePage implements OnInit {
 
   /* Método que obtiene todos los artículos */
   getAllItems() {
-    this.itemService.getAllItems().subscribe((res) => {
-      this.items = res;
-    });
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    if (jwt) {
+      this.itemService.getAllItems().subscribe(
+        (res) => {
+          this.items = res;
+        },
+        (error) => {
+          // se muestra mensaje de error
+          if (error.status == 401) {
+            this.loginError();
+            this.router.navigate(['/login']);
+          }
+        }
+      );
+    } else {
+      this.loginError();
+      this.router.navigate(['/login']);
+    }
   }
 
   /* Método que oculta / muestra la vista de todos los artículos */
@@ -313,10 +330,34 @@ export class WelcomePage implements OnInit {
 
   doRefresh(event) {
     this.getAllItems();
-    
+
     setTimeout(() => {
       event.target.complete();
     }, 2000);
   }
+
+  /* Alerta con mensaje de error */
+  async loginError() {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-danger',
+      header: 'Error 401',
+      message: 'Unauthorized access',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  // /* Alerta con mensaje de bienvenida */
+  // async loginOk() {
+  //   const alert = await this.alertController.create({
+  //     cssClass: 'alert-ok',
+  //     header: 'Welcome!',
+  //     message: "it's time to organize!",
+  //     buttons: ['OK']
+  //   });
+
+  //   await alert.present();
+  // }
 
 }

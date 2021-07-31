@@ -14,17 +14,17 @@
       <ion-card-title>Item</ion-card-title>
       <ion-card-subtitle *ngIf="idForUpdate == 'default'">Create item</ion-card-subtitle>
       <ion-card-subtitle *ngIf="idForUpdate != 'default'">Update item</ion-card-subtitle>
-      
+
     </ion-card-header>
 
     <ion-card-content class="ion-margin-top">
       <form [formGroup]="createItemForm" action="">
-        
+
         <ion-text color="primary">
           <h1>Item
           </h1>
         </ion-text>
-        
+
 
         <ion-list>
           <ion-item lines="none">
@@ -142,7 +142,7 @@
             </ion-item>
           </div>
 
-          <div id="purchase-date-string" *ngIf="!purchaseDateString">
+          <div id="purchase-date-date" *ngIf="!purchaseDateString">
             <ion-item lines="none">
               <ion-label>Purchase date:</ion-label>
             </ion-item>
@@ -155,7 +155,7 @@
         </ion-list>
 
         <div class="ion-margin-top" formGroupName="home">
-          
+
           <ion-item>
             <ion-text color="primary">
               <h1>Home</h1>
@@ -272,7 +272,7 @@
               </ion-input>
             </ion-item>
           </ion-list>
-  
+
           <ion-list>
             <ion-item lines="none">
               <ion-label>Column:</ion-label>
@@ -288,8 +288,6 @@
 
       <ion-button *ngIf="idForUpdate == 'default'" class="ion-margin-top" expand="block" (click)="createItem()" [disabled]="!createItemForm.valid">Create item</ion-button>
       <ion-button *ngIf="idForUpdate != 'default'" class="ion-margin-top" expand="block" (click)="updateItem()" [disabled]="!createItemForm.valid">Update item</ion-button>
-
-      
 
     </ion-card-content>
   </ion-card>

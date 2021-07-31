@@ -26,6 +26,14 @@ const routes: Routes = [
   {
     path: 'show-all',
     loadChildren: () => import('./pages/item/show-all/show-all.module').then( m => m.ShowAllPageModule)
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./pages/user/signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/user/login/login.module').then( m => m.LoginPageModule)
   }
 ];
 

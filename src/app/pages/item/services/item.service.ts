@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -30,16 +30,32 @@ export class ItemService {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item/${itemId}`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = {
+      headers: new HttpHeaders({ 'x-access-token': jwt }),
+    };
+
     /* Devolver datos */
-    return this.http.put(endpoint, body);
+    return this.http.put(endpoint, body, httpOptions);
   }
-  
+
   getAllItems(): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/items`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = {
+      headers: new HttpHeaders({ 'x-access-token': jwt }),
+    };
+
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.get(endpoint, httpOptions);
   }
 
   getItemByDescription(description: SearchDescriptionInterface): Observable<any> {
@@ -78,8 +94,16 @@ export class ItemService {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/homes`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = {
+      headers: new HttpHeaders({ 'x-access-token': jwt }),
+    };
+
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.get(endpoint, httpOptions);
   }
 
   getRooms(description: SearchDescriptionInterface): Observable<any> {
