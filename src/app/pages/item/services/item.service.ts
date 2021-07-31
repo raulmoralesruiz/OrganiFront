@@ -12,7 +12,6 @@ import { ItemUpdateInterface } from '../models/item_update.interface';
 export class ItemService {
 
   server = environment.ip
-  // idForUpdate: string = null;
 
   private idForUpdate = new BehaviorSubject('default');
   currentId = this.idForUpdate.asObservable();
@@ -21,6 +20,11 @@ export class ItemService {
   constructor(
     private http: HttpClient
   ) { }
+
+  /* Cabecera necesaria para indicar token JWT */
+  getHttpOptions(jwt: string) {
+    return { headers: new HttpHeaders({ 'x-access-token': jwt }) };
+  }
 
   setIdForUpdate(id_item: string) {
     this.idForUpdate.next(id_item);
@@ -34,9 +38,7 @@ export class ItemService {
     const jwt = localStorage.getItem('token');
 
     /* Cabecera necesaria para indicar token JWT */
-    let httpOptions = {
-      headers: new HttpHeaders({ 'x-access-token': jwt }),
-    };
+    let httpOptions = this.getHttpOptions(jwt);
 
     /* Devolver datos */
     return this.http.put(endpoint, body, httpOptions);
@@ -50,9 +52,7 @@ export class ItemService {
     const jwt = localStorage.getItem('token');
 
     /* Cabecera necesaria para indicar token JWT */
-    let httpOptions = {
-      headers: new HttpHeaders({ 'x-access-token': jwt }),
-    };
+    let httpOptions = this.getHttpOptions(jwt);
 
     /* Devolver datos */
     return this.http.get(endpoint, httpOptions);
@@ -62,32 +62,56 @@ export class ItemService {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item/description`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.post(endpoint, description);
+    return this.http.post(endpoint, description, httpOptions);
   }
 
   searchItem(field_value: string): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item/search`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.post(endpoint, field_value);
+    return this.http.post(endpoint, field_value, httpOptions);
   }
 
   getItemById(id: string): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item/${id}`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.get(endpoint);
+    return this.http.get(endpoint, httpOptions);
   }
 
   createItem(item: ItemInterface): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* crear grupo con los datos finales para el backend */
-    return this.http.post(endpoint, item);
+    return this.http.post(endpoint, item, httpOptions);
   }
 
   getHomes() {
@@ -98,9 +122,7 @@ export class ItemService {
     const jwt = localStorage.getItem('token');
 
     /* Cabecera necesaria para indicar token JWT */
-    let httpOptions = {
-      headers: new HttpHeaders({ 'x-access-token': jwt }),
-    };
+    let httpOptions = this.getHttpOptions(jwt);
 
     /* Devolver datos */
     return this.http.get(endpoint, httpOptions);
@@ -110,32 +132,56 @@ export class ItemService {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/rooms`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.post(endpoint, description);
+    return this.http.post(endpoint, description, httpOptions);
   }
 
   getContainers(body: any): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/containers`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.post(endpoint, body);
+    return this.http.post(endpoint, body, httpOptions);
   }
 
   getCompartments(body: any): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/compartments`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.post(endpoint, body);
+    return this.http.post(endpoint, body, httpOptions);
   }
 
   deleteItemById(id: string): Observable<any> {
     /* Dirección del servidor - petición */
     const endpoint = this.server + `/item/${id}`;
 
+    /* Obtener token JWT del usuario actual */
+    const jwt = localStorage.getItem('token');
+
+    /* Cabecera necesaria para indicar token JWT */
+    let httpOptions = this.getHttpOptions(jwt);
+
     /* Devolver datos */
-    return this.http.delete(endpoint);
+    return this.http.delete(endpoint, httpOptions);
   }
 
 }

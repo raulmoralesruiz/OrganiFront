@@ -118,7 +118,6 @@ export class CreatePage implements OnInit {
   containerColor: any;
   compartmentRow: any;
   compartmentColumn: any;
-  purchaseDateString: any;
   purchaseDatePicker: any;
 
   /* Opciones del picker de fecha */
@@ -143,10 +142,6 @@ export class CreatePage implements OnInit {
     this.getIdForUpdate();
   }
 
-  changePurchaseDateToPicker() {
-    this.purchaseDateString = null;
-  }
-
   getIdForUpdate() {
     // se obtiene idForUpdate desde servicio
     this.subscription = this.itemService.currentId.subscribe((currentId) => {
@@ -162,7 +157,7 @@ export class CreatePage implements OnInit {
           if (itemForUpdate.purchase_date) {
             let date = itemForUpdate.purchase_date.$date;
             let date_string = this.datePipe.transform(date, 'yyyy-MM-dd');
-            this.purchaseDateString = date_string;
+            this.purchaseDatePicker = date_string;
           }
 
           // se pintan los datos en el formulario
@@ -205,6 +200,11 @@ export class CreatePage implements OnInit {
 
     /* Se crea objeto con los valores del formulario */
     let itemFormObject = this.createItemForm.getRawValue();
+
+    // si purchase_date se ha modificado, se modifica el objeto
+    if (this.purchaseDatePicker) {
+      itemFormObject.purchase_date = this.purchaseDatePicker;
+    }
 
     /* Se limpia objeto, quitando valores nulos */
     itemFormObject = this.cleanObject(itemFormObject);
