@@ -20,11 +20,11 @@
     <ion-card-content class="ion-margin-top">
       <form [formGroup]="createItemForm" action="">
 
-        <ion-text color="primary">
-          <h1>Item
-          </h1>
-        </ion-text>
-
+        <ion-item>
+          <ion-text color="primary">
+            <h1>Item</h1>
+          </ion-text>
+        </ion-item>
 
         <ion-list>
           <ion-item lines="none">
@@ -232,9 +232,11 @@
 
 
         <div class="ion-margin-top" formGroupName="compartment">
-          <ion-text color="primary">
-            <h1>Compartment</h1>
-          </ion-text>
+          <ion-item>
+            <ion-text color="primary">
+              <h1>Compartment</h1>
+            </ion-text>
+          </ion-item>
 
           <ion-list>
             <ion-item lines="none">
