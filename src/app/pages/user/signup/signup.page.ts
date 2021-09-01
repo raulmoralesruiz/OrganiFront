@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { UserSignupInterface } from '../models/user-signup.interface';
+import { UserInterface } from '../models/user.interface';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -6,10 +12,81 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
+  /* Formulario de login */
+  signupForm = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      // Validators.pattern('([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+)'),
+    ]),
+    first_password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(20),
+      Validators.pattern('(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}')
+    ]),
+    second_password: new FormControl('', Validators.required),
+  });
 
-  constructor() { }
+  /* Variable utilizada para ocultar la contraseña */
+  hideFirstPass = true;
+  hideSecondPass = true;
 
-  ngOnInit() {
+  constructor(
+    private userService: UserService,
+    private alertController: AlertController,
+    private router: Router
+  ) {}
+
+  ngOnInit() {}
+
+  signup() {
+    let user: UserInterface = {
+      name: this.signupForm.value.username,
+      email: this.signupForm.value.email,
+      password: this.signupForm.value.first_password,
+    };
+
+    this.userService.signup(user).subscribe(
+      (res) => {
+        if (res.success) {
+          // se muestra mensaje de bienvenida
+          this.signupOk();
+
+          // se redirige a componente create/update
+          this.router.navigate(['/welcome']);
+        } else {
+          // se muestra mensaje de error
+          this.signupError(res.message);
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  /* Alerta con mensaje de error */
+  async signupError(errorMessage) {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-danger',
+      header: 'Error',
+      message: errorMessage,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  /* Alerta con mensaje de bienvenida */
+  async signupOk() {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-ok',
+      header: 'Welcome!',
+      message: "Registration completed!",
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

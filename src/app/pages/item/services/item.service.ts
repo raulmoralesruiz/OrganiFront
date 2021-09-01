@@ -31,8 +31,11 @@ export class ItemService {
   }
 
   updateItem(itemId:string, body:ItemUpdateInterface) {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item/${itemId}`;
+    const endpoint = this.server + `/item/${userId}/${itemId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -45,8 +48,11 @@ export class ItemService {
   }
 
   getAllItems(): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/items`;
+    const endpoint = this.server + `/items/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -59,8 +65,11 @@ export class ItemService {
   }
 
   getItemByDescription(description: SearchDescriptionInterface): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item/description`;
+    const endpoint = this.server + `/item/description/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -73,8 +82,11 @@ export class ItemService {
   }
 
   searchItem(field_value: string): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item/search`;
+    const endpoint = this.server + `/item/search/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -86,9 +98,12 @@ export class ItemService {
     return this.http.post(endpoint, field_value, httpOptions);
   }
 
-  getItemById(id: string): Observable<any> {
+  getItemById(id_doc: string): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item/${id}`;
+    const endpoint = this.server + `/item/${userId}/${id_doc}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -101,8 +116,11 @@ export class ItemService {
   }
 
   createItem(item: ItemInterface): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item`;
+    const endpoint = this.server + `/item/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -115,8 +133,11 @@ export class ItemService {
   }
 
   getHomes() {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/homes`;
+    const endpoint = this.server + `/homes/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -129,8 +150,11 @@ export class ItemService {
   }
 
   getRooms(description: SearchDescriptionInterface): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/rooms`;
+    const endpoint = this.server + `/rooms/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -143,8 +167,11 @@ export class ItemService {
   }
 
   getContainers(body: any): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/containers`;
+    const endpoint = this.server + `/containers/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -157,8 +184,11 @@ export class ItemService {
   }
 
   getCompartments(body: any): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/compartments`;
+    const endpoint = this.server + `/compartments/${userId}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');
@@ -170,9 +200,12 @@ export class ItemService {
     return this.http.post(endpoint, body, httpOptions);
   }
 
-  deleteItemById(id: string): Observable<any> {
+  deleteItemById(id_doc: string): Observable<any> {
+    /* Id del usuario actual */
+    const userId = localStorage.getItem('user_id');
+
     /* Dirección del servidor - petición */
-    const endpoint = this.server + `/item/${id}`;
+    const endpoint = this.server + `/item/${userId}/${id_doc}`;
 
     /* Obtener token JWT del usuario actual */
     const jwt = localStorage.getItem('token');

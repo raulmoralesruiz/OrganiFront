@@ -23,6 +23,11 @@ export class UserService {
     return this.http.post(endpoint, user);
   }
 
+  signup(user: UserInterface): Observable<any> {
+    const endpoint = this.server + '/signup';
+    return this.http.post(endpoint, user);
+  }
+
 
   // // login(user: UserInterface): void {
   // login(user: UserInterface): Observable<any> {

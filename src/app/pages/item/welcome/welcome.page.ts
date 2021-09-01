@@ -60,6 +60,8 @@ export class WelcomePage implements OnInit {
 
   idForUpdate:string;
   subscription: Subscription;
+  
+  userId:string = '';
 
 
   constructor(
@@ -71,6 +73,11 @@ export class WelcomePage implements OnInit {
 
   ngOnInit() {
     this.getAllItems();
+    this.getUserId();
+  }
+
+  getUserId() {
+    this.userId = localStorage.getItem('user_id');
   }
 
   /* Método que muestra artículos buscando por descripción */

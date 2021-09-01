@@ -238,7 +238,6 @@ export class CreatePage implements OnInit {
 
     /* Se existe purchase_date, se convierte de fecha a string */
     if (objeto['purchase_date']) {
-      console.log(objeto['purchase_date']);
       objeto['purchase_date'] = (objeto['purchase_date']).split('T')[0];
     }
 

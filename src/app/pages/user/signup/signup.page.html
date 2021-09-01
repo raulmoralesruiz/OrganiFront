@@ -1,9 +1,84 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>signup</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title routerLink="/welcome" mode=ios color="primary" class="ion-text-center">Organi</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding ion-text-center">
+
+  <form [formGroup]="signupForm" action="">
+
+    <ion-text color="primary">
+      <h1>Sign up</h1>
+    </ion-text>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>Username:</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" formControlName="username" name="username" placeholder="Insert username" autocomplete="off">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>Email:</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input type="email" formControlName="email" name="email" placeholder="Insert email" autocomplete="off">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>Password:</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input [type]="hideFirstPass ? 'password' : 'text'" formControlName="first_password" name="first_password"
+          placeholder="Insert password" autocomplete="off">
+        </ion-input>
+
+        <ion-icon *ngIf="hideFirstPass" name="eye-outline" (click)="hideFirstPass = !hideFirstPass"></ion-icon>
+        <ion-icon *ngIf="!hideFirstPass" name="eye-off-outline" (click)="hideFirstPass = !hideFirstPass"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>Repeat Password:</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input [type]="hideSecondPass ? 'password' : 'text'" formControlName="second_password" name="second_password"
+          placeholder="Insert password again" autocomplete="off">
+        </ion-input>
+
+        <ion-icon *ngIf="hideSecondPass" name="eye-outline" (click)="hideSecondPass = !hideSecondPass"></ion-icon>
+        <ion-icon *ngIf="!hideSecondPass" name="eye-off-outline" (click)="hideSecondPass = !hideSecondPass"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+
+    <div class="ion-text-center">
+      <ion-button (click)="signup()" shape="round"
+        [disabled]="!signupForm.valid || !(signupForm.value.first_password == signupForm.value.second_password)">
+        Sign Up
+      </ion-button>
+    </div>
+
+  </form>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" shape="round" [routerLink]="['/login']">
+      If you are already registered...
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
