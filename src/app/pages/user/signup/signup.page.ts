@@ -18,7 +18,7 @@ export class SignupPage implements OnInit {
     email: new FormControl('', [
       Validators.required,
       Validators.email,
-      // Validators.pattern('([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+)'),
+      Validators.pattern('([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+)'),
     ]),
     first_password: new FormControl('', [
       Validators.required,
