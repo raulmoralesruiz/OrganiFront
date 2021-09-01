@@ -55,7 +55,7 @@ export class SignupPage implements OnInit {
           this.signupOk();
 
           // se redirige a componente create/update
-          this.router.navigate(['/welcome']);
+          this.router.navigate(['/login']);
         } else {
           // se muestra mensaje de error
           this.signupError(res.message);
