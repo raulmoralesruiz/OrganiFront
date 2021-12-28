@@ -24,7 +24,7 @@ export class SignupPage implements OnInit {
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(20),
-      Validators.pattern('(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}')
+      Validators.pattern('(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}'),
     ]),
     second_password: new FormControl('', Validators.required),
   });
@@ -52,13 +52,13 @@ export class SignupPage implements OnInit {
       (res) => {
         if (res.success) {
           // se muestra mensaje de bienvenida
-          this.signupOk();
+          this.alertInfo('Welcome!', res.message)
 
           // se redirige a componente create/update
           this.router.navigate(['/login']);
         } else {
           // se muestra mensaje de error
-          this.signupError(res.message);
+          this.alertError(res.message);
         }
       },
       (err) => {}
@@ -66,27 +66,26 @@ export class SignupPage implements OnInit {
   }
 
   /* Alerta con mensaje de error */
-  async signupError(errorMessage) {
+  async alertError(errorMessage) {
     const alert = await this.alertController.create({
       cssClass: 'alert-danger',
       header: 'Error',
       message: errorMessage,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
 
     await alert.present();
   }
 
-  /* Alerta con mensaje de bienvenida */
-  async signupOk() {
+  /* Alerta de información */
+  async alertInfo(head: string, msg: string) {
     const alert = await this.alertController.create({
       cssClass: 'alert-ok',
-      header: 'Welcome!',
-      message: "Registration completed!",
-      buttons: ['OK']
+      header: head,
+      message: msg,
+      buttons: ['OK'],
     });
 
     await alert.present();
   }
-
 }

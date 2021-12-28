@@ -38,6 +38,9 @@
     <ion-list>
       <ion-item lines="none">
         <ion-label>Password:</ion-label>
+        <ion-icon color="primary" name="information-circle-outline"
+          (click)="alertInfo('Information','The password must have between 8 and 20 characters, at least one uppercase, one lowercase and one number.')">
+        </ion-icon>
       </ion-item>
       <ion-item>
         <ion-input [type]="hideFirstPass ? 'password' : 'text'" formControlName="first_password" name="first_password"
