@@ -129,6 +129,7 @@ export class CreatePage implements OnInit {
   subscription: Subscription;
 
   itemSelectedColor = 'Item color';
+  movingView = false;
 
   constructor(
     private itemService: ItemService,
@@ -211,36 +212,32 @@ export class CreatePage implements OnInit {
 
     // si item_color se ha modificado, se modifica el objeto
     if (this.itemSelectedColor !== 'Item color') {
-      console.log('entra en itemSelectedColor');
       itemFormObject.color = this.itemSelectedColor;
-      console.log(this.itemSelectedColor);
-    } else {
-      console.log('entra en NULL itemSelectedColor');
-      // itemFormObject.color = null;
     }
-
-    console.log('antes');
-    console.log(itemFormObject);
 
     /* Se limpia objeto, quitando valores nulos */
     itemFormObject = this.cleanObject(itemFormObject);
 
-    console.log('despues');
-    console.log(itemFormObject);
-
     /* Se crea artículo */
-    this.itemService.createItem(itemFormObject).subscribe((response) => {
-      console.log(response);
+    this.itemService.createItem(itemFormObject).subscribe(
+      (res) => {
+        /* Se resetea el formulario y valores establecidos fuera del formulario */
+        this.createItemForm.reset();
+        this.purchaseDatePicker = undefined;
+        this.itemSelectedColor = 'Item color';
+        this.resetHome();
+        this.getHomes();
 
-      /* Se resetea el formulario y valores establecidos fuera del formulario */
-      this.createItemForm.reset();
-      this.purchaseDatePicker = undefined;
-      this.itemSelectedColor = 'Item color';
-      this.resetHome();
+        if (res.status === 'ERROR') {
+          this.createItemError(res.response);
+        } else {
+          this.createItemOk(res.response);
+        }
 
-      /* Se elimina aviso de carga */
-      // this.loading.dismiss();
-    });
+        /* Se elimina aviso de carga */
+        // this.loading.dismiss();
+      }
+    );
   }
 
   cleanObject(objeto: object) {
@@ -354,12 +351,7 @@ export class CreatePage implements OnInit {
     let body: SearchDescriptionInterface = {
       description: this.homeDescription,
     };
-    console.log('room body');
-    console.log(body);
-
     this.itemService.getRooms(body).subscribe((res) => {
-      console.log('room res');
-      console.log(res);
       this.roomsArray = res;
     });
   }
@@ -398,10 +390,23 @@ export class CreatePage implements OnInit {
 
             /* Restablecer valores para comenzar la búsqueda desde cero */
             this.resetContainer();
-            this.resetCompartment();
 
             /* Obtener contenedores correspondientes a la habitación */
             this.getContainers();
+
+            if (!this.movingView) {
+              /* Restablecer valores para comenzar la búsqueda desde cero */
+              this.resetCompartment();
+            }
+
+            // if (!this.movingView) {
+            //   /* Restablecer valores para comenzar la búsqueda desde cero */
+            //   this.resetContainer();
+            //   this.resetCompartment();
+
+            //   /* Obtener contenedores correspondientes a la habitación */
+            //   this.getContainers();
+            // }
           },
         },
       ],
@@ -462,11 +467,13 @@ export class CreatePage implements OnInit {
             this.containerDescription = value.Description.value.description;
             this.containerColor = value.Description.value.color;
 
-            /* Restablecer valores para comenzar la búsqueda desde cero */
-            this.resetCompartment();
+            if (!this.movingView) {
+              /* Restablecer valores para comenzar la búsqueda desde cero */
+              this.resetCompartment();
 
-            /* Obtener habitaciones correspondientes al hogar */
-            this.getCompartments()
+              /* Obtener habitaciones correspondientes al hogar */
+              this.getCompartments();
+            }
           },
         },
       ],
@@ -723,23 +730,59 @@ export class CreatePage implements OnInit {
 
   resetItemColor() {
     this.itemSelectedColor = 'Item color';
-    console.log('itemSelectedColor');
-    console.log(this.itemSelectedColor);
   }
 
-  testObject() {
-    console.log('log object');
-    console.log(this.createItemForm.getRawValue());
+  /* Alerta con mensaje de error */
+  async createItemError(msg: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-danger',
+      header: 'Error',
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
-  testReset() {
-    console.log('log reset room');
-    this.resetRoom();
+  /* Alerta con mensaje de bienvenida */
+  async createItemOk(msg: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-ok',
+      header: 'Perfect!',
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
-  testItemColor() {
-    const itemColorObject = document.querySelector('.itemColor');
-    console.log(itemColorObject);
+  checkMovingView() {
+    if (this.movingView) {
+      this.homeDescription = 'moving';
+      this.compartmentColumn = 'mv';
+      this.compartmentRow = 'mv';
+      this.getRooms();
+    } else {
+      this.resetHome();
+      this.roomsArray = [];
+      this.compartmentColumn = undefined;
+      this.compartmentRow = undefined;
+    }
   }
+
+  // testObject() {
+  //   console.log('log object');
+  //   console.log(this.createItemForm.getRawValue());
+  // }
+
+  // testReset() {
+  //   console.log('log reset room');
+  //   this.resetRoom();
+  // }
+
+  // testItemColor() {
+  //   const itemColorObject = document.querySelector('.itemColor');
+  //   console.log(itemColorObject);
+  // }
 
 }

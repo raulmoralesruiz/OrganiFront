@@ -22,10 +22,6 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/user/login/login.module').then( m => m.LoginPageModule)
   },
-  {
-    path: 'moving',
-    loadChildren: () => import('./pages/item/moving/moving.module').then( m => m.MovingPageModule)
-  }
 ];
 
 @NgModule({
