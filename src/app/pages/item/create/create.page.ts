@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, PickerController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, PickerController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ItemInterface } from '../models/item.interface';
 import { SearchDescriptionInterface } from '../models/search_description.interface';
@@ -125,8 +125,10 @@ export class CreatePage implements OnInit {
     backdropDismiss: false,
   };
 
-  idForUpdate:string;
+  idForUpdate: string;
   subscription: Subscription;
+
+  itemSelectedColor = 'Item color';
 
   constructor(
     private itemService: ItemService,
@@ -134,7 +136,8 @@ export class CreatePage implements OnInit {
     private pickerController: PickerController,
     private datePipe: DatePipe,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController,
   ) {}
 
   ngOnInit() {
@@ -206,13 +209,34 @@ export class CreatePage implements OnInit {
       itemFormObject.purchase_date = this.purchaseDatePicker;
     }
 
+    // si item_color se ha modificado, se modifica el objeto
+    if (this.itemSelectedColor !== 'Item color') {
+      console.log('entra en itemSelectedColor');
+      itemFormObject.color = this.itemSelectedColor;
+      console.log(this.itemSelectedColor);
+    } else {
+      console.log('entra en NULL itemSelectedColor');
+      // itemFormObject.color = null;
+    }
+
+    console.log('antes');
+    console.log(itemFormObject);
+
     /* Se limpia objeto, quitando valores nulos */
     itemFormObject = this.cleanObject(itemFormObject);
 
+    console.log('despues');
+    console.log(itemFormObject);
+
     /* Se crea artículo */
     this.itemService.createItem(itemFormObject).subscribe((response) => {
-      /* Se resetea el formulario */
+      console.log(response);
+
+      /* Se resetea el formulario y valores establecidos fuera del formulario */
       this.createItemForm.reset();
+      this.purchaseDatePicker = undefined;
+      this.itemSelectedColor = 'Item color';
+      this.resetHome();
 
       /* Se elimina aviso de carga */
       // this.loading.dismiss();
@@ -308,13 +332,19 @@ export class CreatePage implements OnInit {
             this.resetCompartment();
 
             /* Obtener habitaciones correspondientes al hogar */
-            this.getRooms()
+            this.getRooms();
           },
         },
       ],
     });
 
     await picker.present();
+  }
+
+  /* Método para resetear los valores de los hogares */
+  resetHome() {
+    this.homeDescription = undefined;
+    this.homeAddress = undefined;
   }
 
   /* -------------------- ROOM -------------------- */
@@ -324,8 +354,12 @@ export class CreatePage implements OnInit {
     let body: SearchDescriptionInterface = {
       description: this.homeDescription,
     };
+    console.log('room body');
+    console.log(body);
 
     this.itemService.getRooms(body).subscribe((res) => {
+      console.log('room res');
+      console.log(res);
       this.roomsArray = res;
     });
   }
@@ -367,7 +401,7 @@ export class CreatePage implements OnInit {
             this.resetCompartment();
 
             /* Obtener contenedores correspondientes a la habitación */
-            this.getContainers()
+            this.getContainers();
           },
         },
       ],
@@ -379,7 +413,7 @@ export class CreatePage implements OnInit {
   /* Método para resetear los valores de las habitaciones */
   resetRoom() {
     this.roomDescription = null;
-    this.roomFloor = null;
+    this.roomFloor = undefined;
   }
 
   /* -------------------- CONTAINER -------------------- */
@@ -536,4 +570,176 @@ export class CreatePage implements OnInit {
 
     await alert.present();
   }
+
+  async colorActionSheet() {
+    const itemColorObject = document.querySelector('.itemColor');
+
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Items actions',
+      backdropDismiss: false,
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Amarillo',
+          cssClass: 'iconColorYellow',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'amarillo';
+            itemColorObject.classList.add('iconColorYellow');
+          },
+        },
+        {
+          text: 'Azul',
+          cssClass: 'iconColorBlue',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'azul';
+            itemColorObject.classList.add('iconColorBlue');
+          },
+        },
+        {
+          text: 'Rosa',
+          cssClass: 'iconColorPink',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'rosa';
+            itemColorObject.classList.add('iconColorPink');
+          },
+        },
+        {
+          text: 'Verde',
+          cssClass: 'iconColorGreen',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'verde';
+            itemColorObject.classList.add('iconColorGreen');
+          },
+        },
+        {
+          text: 'Blanco',
+          cssClass: 'iconColorWhite',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'blanco';
+            itemColorObject.classList.add('iconColorWhite');
+          },
+        },
+        {
+          text: 'Rojo',
+          cssClass: 'iconColorRed',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'rojo';
+            itemColorObject.classList.add('iconColorRed');
+          },
+        },
+        {
+          text: 'Naranja',
+          cssClass: 'iconColorOrange',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'naranja';
+            itemColorObject.classList.add('iconColorOrange');
+          },
+        },
+        {
+          text: 'Morado',
+          cssClass: 'iconColorPurple',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'morado';
+            itemColorObject.classList.add('iconColorPurple');
+          },
+        },
+        {
+          text: 'Gris',
+          cssClass: 'iconColorGray',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'gris';
+            itemColorObject.classList.add('iconColorGray');
+          },
+        },
+        {
+          text: 'Negro',
+          cssClass: 'iconColorBlack',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'negro';
+            itemColorObject.classList.add('iconColorBlack');
+          },
+        },
+        {
+          text: 'Dorado',
+          cssClass: 'iconColorGold',
+          icon: 'ellipse',
+          handler: () => {
+            this.removeColorClass();
+            this.itemSelectedColor = 'dorado';
+            itemColorObject.classList.add('iconColorGold');
+          },
+        },
+        {
+          text: 'Close',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {},
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  showColorActionsheet() {
+    this.colorActionSheet();
+  }
+
+  removeColorClass() {
+    const itemColorObject = document.querySelector('.itemColor');
+    itemColorObject.classList.remove(
+      'iconColorYellow',
+      'iconColorBlue',
+      'iconColorPink',
+      'iconColorGreen',
+      'iconColorWhite',
+      'iconColorRed',
+      'iconColorOrange',
+      'iconColorPurple',
+      'iconColorGray',
+      'iconColorBlack',
+      'iconColorGold'
+    );
+  }
+
+  resetItemColor() {
+    this.itemSelectedColor = 'Item color';
+    console.log('itemSelectedColor');
+    console.log(this.itemSelectedColor);
+  }
+
+  testObject() {
+    console.log('log object');
+    console.log(this.createItemForm.getRawValue());
+  }
+
+  testReset() {
+    console.log('log reset room');
+    this.resetRoom();
+  }
+
+  testItemColor() {
+    const itemColorObject = document.querySelector('.itemColor');
+    console.log(itemColorObject);
+  }
+
 }

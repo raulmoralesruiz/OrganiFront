@@ -69,7 +69,7 @@
 
     <div class="ion-text-center">
       <ion-button (click)="signup()" shape="round"
-        [disabled]="!signupForm.valid || !(signupForm.value.first_password == signupForm.value.second_password)">
+        [disabled]="!signupForm.valid || !(signupForm.value.first_password === signupForm.value.second_password)">
         Sign Up
       </ion-button>
     </div>

@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>moving</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label> Single Selection </ion-label>
+    </ion-list-header>
+
+    <ion-icon color="primary" name="ellipse"></ion-icon>
+    <ion-icon color="secondary" name="ellipse"></ion-icon>
+    <ion-icon color="tertiary" name="ellipse"></ion-icon>
+    <ion-icon color="warning" name="ellipse"></ion-icon>
+    <ion-icon color="danger" name="ellipse"></ion-icon>
+
+    <ion-button (click)="showActionsheet()" expand="block"  shape="round">
+      Colors - Action sheet
+    </ion-button>
+
+    <ion-item>
+      <ion-label>Color</ion-label>
+      <ion-select multiple="true" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Seleccionar">
+        <ion-select-option value="amarillo">Amarillo</ion-select-option>
+        <ion-select-option value="azul">Azul</ion-select-option>
+        <ion-select-option value="rosa">Rosa</ion-select-option>
+        <ion-select-option value="verde">Verde</ion-select-option>
+        <ion-select-option value="blanco">Blanco</ion-select-option>
+        <ion-select-option value="rojo">Rojo</ion-select-option>
+        <ion-select-option value="naranja">Naranja</ion-select-option>
+        <ion-select-option value="morado">Morado</ion-select-option>
+        <ion-select-option value="gris">Gris</ion-select-option>
+        <ion-select-option value="negro">Negro</ion-select-option>
+        <ion-select-option value="plateado">Plateado</ion-select-option>
+        <ion-select-option value="dorado">Dorado</ion-select-option>
+        <ion-select-option value="varios">Varios</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Gender</ion-label>
+      <ion-select placeholder="Select One">
+        <ion-select-option value="f">Female</ion-select-option>
+        <ion-select-option value="m">Male</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Hair Color</ion-label>
+      <ion-select value="brown" okText="Okay" cancelText="Dismiss">
+        <ion-select-option value="brown">Brown</ion-select-option>
+        <ion-select-option value="blonde">Blonde</ion-select-option>
+        <ion-select-option value="black">Black</ion-select-option>
+        <ion-select-option value="red">Red</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label> Multiple Selection </ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Toppings</ion-label>
+      <ion-select multiple="true" cancelText="Nah" okText="Okay!">
+        <ion-select-option value="bacon">Bacon</ion-select-option>
+        <ion-select-option value="olives">Black Olives</ion-select-option>
+        <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+        <ion-select-option value="peppers">Green Peppers</ion-select-option>
+        <ion-select-option value="mushrooms">Mushrooms</ion-select-option>
+        <ion-select-option value="onions">Onions</ion-select-option>
+        <ion-select-option value="pepperoni">Pepperoni</ion-select-option>
+        <ion-select-option value="pineapple">Pineapple</ion-select-option>
+        <ion-select-option value="sausage">Sausage</ion-select-option>
+        <ion-select-option value="Spinach">Spinach</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Pets</ion-label>
+      <ion-select multiple="true" [value]="['bird', 'dog']">
+        <ion-select-option value="bird">Bird</ion-select-option>
+        <ion-select-option value="cat">Cat</ion-select-option>
+        <ion-select-option value="dog">Dog</ion-select-option>
+        <ion-select-option value="honeybadger">Honey Badger</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

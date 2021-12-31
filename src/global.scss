@@ -46,11 +46,77 @@
 
   .alert-title.sc-ion-alert-md, .alert-title.sc-ion-alert-ios {
       color: black;
-  }   
+  }
   .alert-message.sc-ion-alert-md, .alert-message.sc-ion-alert-ios {
       color: white;
   }
   .alert-button.sc-ion-alert-md, .alert-button.sc-ion-alert-ios {
       color: black;
+  }
+}
+
+.iconColorYellow {
+  ion-icon {
+    color: var(--ion-color-yellow) !important;
+  }
+}
+
+.iconColorBlue {
+  ion-icon {
+    color: var(--ion-color-blue) !important;
+  }
+}
+
+.iconColorPink {
+  ion-icon {
+    color: var(--ion-color-pink) !important;
+  }
+}
+
+.iconColorGreen {
+  ion-icon {
+    color: var(--ion-color-green) !important;
+  }
+}
+
+.iconColorWhite {
+  ion-icon {
+    color: var(--ion-color-white) !important;
+  }
+}
+
+.iconColorRed {
+  ion-icon {
+    color: var(--ion-color-red) !important;
+  }
+}
+
+.iconColorOrange {
+  ion-icon {
+    color: var(--ion-color-orange) !important;
+  }
+}
+
+.iconColorPurple {
+  ion-icon {
+    color: var(--ion-color-purple) !important;
+  }
+}
+
+.iconColorGray {
+  ion-icon {
+    color: var(--ion-color-gray) !important;
+  }
+}
+
+.iconColorBlack {
+  ion-icon {
+    color: var(--ion-color-black) !important;
+  }
+}
+
+.iconColorGold {
+  ion-icon {
+    color: var(--ion-color-gold) !important;
   }
 }
