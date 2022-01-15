@@ -164,6 +164,15 @@ export class CreatePage implements OnInit {
             this.purchaseDatePicker = date_string;
           }
 
+          // insertar valor a la variable itemSelectedColor
+          if (itemForUpdate.color) {
+            // establecer el valor del color en el formulario
+            this.itemSelectedColor = itemForUpdate.color;
+
+            // establecer el color del icono (burbuja junto al texto)
+            this.setColorClass(this.itemSelectedColor);
+          }
+
           // se pintan los datos en el formulario
           this.createItemForm.patchValue(itemForUpdate);
         });
@@ -178,6 +187,11 @@ export class CreatePage implements OnInit {
     // si purchase_date se ha modificado, se modifica el objeto
     if (this.purchaseDatePicker) {
       itemFormObject.purchase_date = this.purchaseDatePicker;
+    }
+
+    // si item_color se ha modificado, se modifica el objeto
+    if (this.itemSelectedColor !== 'Item color') {
+      itemFormObject.color = this.itemSelectedColor;
     }
 
     itemFormObject = this.cleanObject(itemFormObject);
@@ -591,9 +605,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorYellow',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'amarillo';
-            itemColorObject.classList.add('iconColorYellow');
+            this.setColorClass('amarillo');
           },
         },
         {
@@ -601,9 +613,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorBlue',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'azul';
-            itemColorObject.classList.add('iconColorBlue');
+            this.setColorClass('azul');
           },
         },
         {
@@ -611,9 +621,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorPink',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'rosa';
-            itemColorObject.classList.add('iconColorPink');
+            this.setColorClass('rosa');
           },
         },
         {
@@ -621,19 +629,15 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorGreen',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'verde';
-            itemColorObject.classList.add('iconColorGreen');
+            this.setColorClass('verde');
           },
         },
         {
           text: 'Blanco',
-          cssClass: 'iconColorWhite',
-          icon: 'ellipse',
+          cssClass: 'iconColorBlack',
+          icon: 'ellipse-outline',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'blanco';
-            itemColorObject.classList.add('iconColorWhite');
+            this.setColorClass('blanco');
           },
         },
         {
@@ -641,9 +645,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorRed',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'rojo';
-            itemColorObject.classList.add('iconColorRed');
+            this.setColorClass('rojo');
           },
         },
         {
@@ -651,9 +653,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorOrange',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'naranja';
-            itemColorObject.classList.add('iconColorOrange');
+            this.setColorClass('naranja');
           },
         },
         {
@@ -661,9 +661,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorPurple',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'morado';
-            itemColorObject.classList.add('iconColorPurple');
+            this.setColorClass('morado');
           },
         },
         {
@@ -671,9 +669,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorGray',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'gris';
-            itemColorObject.classList.add('iconColorGray');
+            this.setColorClass('gris');
           },
         },
         {
@@ -681,9 +677,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorBlack',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'negro';
-            itemColorObject.classList.add('iconColorBlack');
+            this.setColorClass('negro');
           },
         },
         {
@@ -691,9 +685,7 @@ export class CreatePage implements OnInit {
           cssClass: 'iconColorGold',
           icon: 'ellipse',
           handler: () => {
-            this.removeColorClass();
-            this.itemSelectedColor = 'dorado';
-            itemColorObject.classList.add('iconColorGold');
+            this.setColorClass('dorado');
           },
         },
         {
@@ -705,6 +697,60 @@ export class CreatePage implements OnInit {
       ],
     });
     await actionSheet.present();
+  }
+
+  setColorClass(color: string) {
+    const itemColorObject = document.querySelector('.itemColor');
+    this.removeColorClass();
+
+    switch (color) {
+      case 'amarillo':
+        this.itemSelectedColor = 'amarillo';
+        itemColorObject.classList.add('iconColorYellow');
+        break;
+      case 'azul':
+        this.itemSelectedColor = 'azul';
+        itemColorObject.classList.add('iconColorBlue');
+        break;
+      case 'rosa':
+        this.itemSelectedColor = 'rosa';
+        itemColorObject.classList.add('iconColorPink');
+        break;
+      case 'verde':
+        this.itemSelectedColor = 'verde';
+        itemColorObject.classList.add('iconColorGreen');
+        break;
+      case 'blanco':
+        this.itemSelectedColor = 'blanco';
+        itemColorObject.classList.add('iconColorBlack');
+        break;
+      case 'rojo':
+        this.itemSelectedColor = 'rojo';
+        itemColorObject.classList.add('iconColorRed');
+        break;
+      case 'naranja':
+        this.itemSelectedColor = 'naranja';
+        itemColorObject.classList.add('iconColorOrange');
+        break;
+      case 'morado':
+        this.itemSelectedColor = 'morado';
+        itemColorObject.classList.add('iconColorPurple');
+        break;
+      case 'gris':
+        this.itemSelectedColor = 'gris';
+        itemColorObject.classList.add('iconColorGray');
+        break;
+      case 'negro':
+        this.itemSelectedColor = 'negro';
+        itemColorObject.classList.add('iconColorBlack');
+        break;
+      case 'dorado':
+        this.itemSelectedColor = 'dorado';
+        itemColorObject.classList.add('iconColorGold');
+        break;
+      default:
+        break;
+    }
   }
 
   showColorActionsheet() {

@@ -64,7 +64,8 @@
           </ion-item>
           <ion-item class="itemColor">
             <ion-input [value]="itemSelectedColor" disabled></ion-input>
-            <ion-icon *ngIf="itemSelectedColor !== 'Item color'" slot="end" name="ellipse"></ion-icon>
+            <ion-icon *ngIf="itemSelectedColor !== 'Item color' && itemSelectedColor !=='blanco'" slot="end" name="ellipse"></ion-icon>
+            <ion-icon *ngIf="itemSelectedColor === 'blanco'" slot="end" name="ellipse-outline"></ion-icon>
           </ion-item>
         </ion-list>
 

@@ -60,7 +60,7 @@ export class WelcomePage implements OnInit {
 
   idForUpdate:string;
   subscription: Subscription;
-  
+
   userId:string = '';
 
 
